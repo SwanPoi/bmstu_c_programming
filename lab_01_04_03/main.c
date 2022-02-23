@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int product_of_number(int number);
 
@@ -8,7 +9,7 @@ int main(void)
     int product;
 
     scanf("%d", &number);
-    product = product_of_number(number);
+    product = product_of_number(abs(number));
     printf("%d\n", product);
 
     return 0;
@@ -16,10 +17,14 @@ int main(void)
 
 int product_of_number(int number)
 {
-    int first = number / 100;
-    int last = number % 10;
-    int middle = number / 10 % 10;
+    int product = 1;
+    
+    while (number != 0)
+    {
+        product *= number % 10;
+        number /= 10;
+    }
 
-    return first*middle*last;
+    return product;
 }
  

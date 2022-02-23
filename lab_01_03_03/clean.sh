@@ -1,2 +1,2 @@
 #!/bin/bash
-rm -rf *o *.exe
+rm -rf *o *.exe *.txt

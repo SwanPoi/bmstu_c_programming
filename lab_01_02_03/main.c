@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <math.h>
 
-float square_of_triangle(float x, float y, float alpha);
+#define PI 3.1415926535
+
+double square_of_triangle(double x, double y, double alpha);
 
 int main(void)
 {
-    float a, b, alpha;
-    float square;
+    double a, b, alpha;
+    double square;
 
-    scanf("%f%f%f", &a, &b, &alpha);
+    scanf("%lf%lf%lf", &a, &b, &alpha);
 
     square = square_of_triangle(a, b, alpha);
 
@@ -17,10 +19,10 @@ int main(void)
     return 0;
 }
 
-float square_of_triangle(float x, float y, float alpha)
+double square_of_triangle(double x, double y, double alpha)
 {
-    float corner = alpha * 3.1415926 / 180;
+    double corner = alpha * PI / 180.0;
 
-    return 0.5*x*y*sin(corner);
+    return 0.5 * x * y * sin(corner);
 }
 
