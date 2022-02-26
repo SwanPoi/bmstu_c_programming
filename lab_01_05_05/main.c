@@ -11,12 +11,10 @@ int main(void)
 {
     int number;
     int code, rc = ERR_OK;
-    char tmp;
 
-    if (((code = scanf("%d%c", &number, &tmp)) != 2 && code != -1) || (tmp != '\n'))
+    if ((code = scanf("%d", &number)) != 1)
         rc = ERR_IO;
-    
-    else if (code == 2 && number < 1)
+    else if (number < 1)
         rc = ERR_NOT_NATURAL;
     else
     {
@@ -32,7 +30,6 @@ int main(void)
         printf("\n");
     }
     
-
     return rc;
 }
 

@@ -1,0 +1,1 @@
+Error: program can't convert this number to binary system.
