@@ -45,14 +45,14 @@ int multiplication(double x1, double y1, double x2, double y2, double x3, double
 {
     int code;
     double first_multi = oblique_product(x1, y1, x2, y2, x3, y3) *
-                         oblique_product(x1, y1, x2, y2, x4, y4);
+        oblique_product(x1, y1, x2, y2, x4, y4);
 
     double second_multi = oblique_product(x3, y3, x4, y4, x1, y1) *
-                          oblique_product(x3, y3, x4, y4, x2, y2);
+        oblique_product(x3, y3, x4, y4, x2, y2);
 
     if (first_multi < 0 && second_multi < 0)
         code = 1;
-    else if ((first_multi >= 0 && first_multi < EPS) || (second_multi >= 0 && second_multi < EPS))
+    else if (fabs(first_multi) < EPS || fabs(second_multi) < EPS)
         code = 2;
     else
         code = 0;
@@ -65,7 +65,8 @@ int point_on_segment(double x1, double y1, double x2, double y2, double x_other,
     int point_on_segment = 0;
     double point_on_line = oblique_product(x1, y1, x2, y2, x_other, y_other);
     double scalar_product = (x1 - x_other) * (x2 - x_other) + (y1 - y_other) * (y2 - y_other);
-    if ((point_on_line >= 0 && point_on_line < EPS) && scalar_product <= 0) point_on_segment = 1;
+    if (fabs(point_on_line) < EPS && scalar_product <= 0) 
+        point_on_segment = 1;
 
     return point_on_segment;
 }
@@ -73,9 +74,9 @@ int point_on_segment(double x1, double y1, double x2, double y2, double x_other,
 int point_intersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) 
 {
     return (point_on_segment(x1, y1, x2, y2, x3, y3) == 1 ||
-            point_on_segment(x1, y1, x2, y2, x4, y4) == 1 ||
-            point_on_segment(x3, y3, x4, y4, x1, y1) == 1 ||
-            point_on_segment(x3, y3, x4, y4, x2, y2) == 1);
+        point_on_segment(x1, y1, x2, y2, x4, y4) == 1 ||
+        point_on_segment(x3, y3, x4, y4, x1, y1) == 1 ||
+        point_on_segment(x3, y3, x4, y4, x2, y2) == 1);
 }
 
 

@@ -8,13 +8,13 @@
 #define ERR_OVERFLOW 3
 #define ERR_TOO_BIG 4
 
-unsigned long long int dec_to_bin(unsigned int number);
+void dec_to_bin(unsigned int number);
 
 unsigned int get_even_bits(unsigned int number);
 
 unsigned int get_odd_bits(unsigned int number);
 
-unsigned long long int encode(unsigned int number);
+unsigned int encode(unsigned int number);
 
 int main(void) 
 {
@@ -26,40 +26,35 @@ int main(void)
     {
         rc = ERR_IO;
         printf("Error: input error.\n");
-    } else if (number < 0) 
+    } 
+    else if (number < 0) 
     {
         rc = ERR_NEGATIVE;
         printf("Error: you input negative number.\n");
-    } else if (number > UINT_MAX) 
+    } 
+    else if (number > UINT_MAX) 
     {
         rc = ERR_OVERFLOW;
         printf("Error: you exceeded size of unsigned int.\n");
-    } else if (number >= pow(2, 20)) 
-    {
-        rc = ERR_TOO_BIG;
-        printf("Error: program can't convert this number to binary system.\n");
-    } else 
+    } 
+    else 
     {
         encoded_number = encode((unsigned int) number);
-        printf("Result: %llu\n", encoded_number);
+        dec_to_bin(encoded_number);
     }
 
     return rc;
 }
 
-unsigned long long int dec_to_bin(unsigned int number) 
+void dec_to_bin(unsigned int number) 
 {
-    unsigned long long int bin_number = 0;
-    unsigned long long int bit = 1;
-
-    while (number) 
+    printf("Result: ");
+    for (int i = 31; i >= 0; i--)
     {
-        bin_number += bit * ((unsigned long long int) number % 2);
-        bit *= 10;
-        number /= 2;
+        int bit = (number >> i) & 1;
+        printf("%d", bit);
     }
-
-    return bin_number;
+    printf("\n");
 }
 
 unsigned int get_even_bits(unsigned int number) 
@@ -72,10 +67,10 @@ unsigned int get_odd_bits(unsigned int number)
     return (number & 1431655765) << 1;
 }
 
-unsigned long long int encode(unsigned int number) 
+unsigned int encode(unsigned int number) 
 {
     unsigned int odd_bits = get_odd_bits(number), even_bits = get_even_bits(number);
-    unsigned long long int encoded_number = dec_to_bin((unsigned long long int) (odd_bits + even_bits));
+    unsigned int encoded_number = odd_bits + even_bits;
 
     return encoded_number;
 }
