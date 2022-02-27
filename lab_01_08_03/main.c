@@ -45,7 +45,7 @@ void dec_to_bin(unsigned int number)
     printf("Result: ");
     for (int i = 31; i >= 0; i--)
     {
-        int bit = (number >> i) & 1;
+        int bit = (number >> i) % 2;
         printf("%d", bit);
     }
     printf("\n");
@@ -53,14 +53,10 @@ void dec_to_bin(unsigned int number)
 
 unsigned int encode(unsigned int number) 
 {
-    unsigned int encoded_number = number;
-    for (int i = 31; i > 0; i -= 2)
-    {
-        int left = ((encoded_number >> i) & 1);
-        int right = ((encoded_number >> (i - 1)) & 1);
-        encoded_number = (((~(1 << i)) & encoded_number) | (right << i));
-        encoded_number = (((~(1 << (i - 1))) & encoded_number) | (left << (i-1)));
-    }
+    unsigned long encoded_number, odd_bits;
+
+	odd_bits = 2863311530;
+	encoded_number = ((odd_bits & number) >> 1) | (((~odd_bits & number) << 1));
 
     return encoded_number;
 }
