@@ -1,18 +1,12 @@
 #include <stdio.h>
 #include <limits.h>
-#include <math.h>
 
 #define ERR_OK 0
 #define ERR_IO 1
 #define ERR_NEGATIVE 2
 #define ERR_OVERFLOW 3
-#define ERR_TOO_BIG 4
 
 void dec_to_bin(unsigned int number);
-
-unsigned int get_even_bits(unsigned int number);
-
-unsigned int get_odd_bits(unsigned int number);
 
 unsigned int encode(unsigned int number);
 
@@ -57,20 +51,16 @@ void dec_to_bin(unsigned int number)
     printf("\n");
 }
 
-unsigned int get_even_bits(unsigned int number) 
-{
-    return ((number & 2863311530)) >> 1;
-}
-
-unsigned int get_odd_bits(unsigned int number) 
-{
-    return (number & 1431655765) << 1;
-}
-
 unsigned int encode(unsigned int number) 
 {
-    unsigned int odd_bits = get_odd_bits(number), even_bits = get_even_bits(number);
-    unsigned int encoded_number = odd_bits + even_bits;
+    unsigned int encoded_number = number;
+    for (int i = 31; i > 0; i -= 2)
+    {
+        int left = ((encoded_number >> i) & 1);
+        int right = ((encoded_number >> (i - 1)) & 1);
+        encoded_number = (((~(1 << i)) & encoded_number) | (right << i));
+        encoded_number = (((~(1 << (i - 1))) & encoded_number) | (left << (i-1)));
+    }
 
     return encoded_number;
 }
