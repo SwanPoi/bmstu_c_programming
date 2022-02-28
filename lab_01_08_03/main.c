@@ -3,6 +3,7 @@
 
 #define ERR_OK 0
 #define ERR_IO 1
+#define ODD_BITS 2863311530
 
 void dec_to_bin(unsigned int number);
 
@@ -41,10 +42,9 @@ void dec_to_bin(unsigned int number)
 
 unsigned int encode(unsigned int number) 
 {
-    unsigned long encoded_number, odd_bits;
+    unsigned long encoded_number;
 
-    odd_bits = 2863311530;
-    encoded_number = ((odd_bits & number) >> 1) | (((~odd_bits & number) << 1));
+    encoded_number = ((ODD_BITS & number) >> 1) | (((~ODD_BITS & number) << 1));
 
     return encoded_number;
 }
