@@ -1,2 +1,3 @@
 #!/bin/bash
-rm -rf *o *.exe *.txt *.gcda *.gcno *.gcov
+
+rm -f ./*.exe ./*.o ./*.gcda ./*.gcno ./*.gcov ./*.txt
