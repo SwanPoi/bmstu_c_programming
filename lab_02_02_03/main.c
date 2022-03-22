@@ -10,9 +10,9 @@
 #define SIZE_OF_ARRAY 10
 
 size_t input_length(int *code);
-void input_array(int *arr, size_t *length, int *code);
-void print_array(int *arr, size_t *length);
-void create_new_arr(int *arr, size_t *length, int *code, int *new_arr, size_t *new_length);
+void input_array(int *arr, size_t length, int *code);
+void print_array(int *arr, size_t length);
+void create_new_arr(int *arr, size_t length, int *code, int *new_arr, size_t *new_length);
 int is_armstrong(int number);
 size_t length_of_number(int number);
 
@@ -24,16 +24,16 @@ int main(void)
     if (rc == ERR_OK)
     {
         int arr[SIZE_OF_ARRAY];
-        input_array(arr, &length, &rc);
+        input_array(arr, length, &rc);
         if (rc == ERR_OK)
         {
             int new_arr[SIZE_OF_ARRAY];
             size_t new_length = 0;
 
-            create_new_arr(arr, &length, &rc, new_arr, &new_length);
+            create_new_arr(arr, length, &rc, new_arr, &new_length);
             if (rc == ERR_OK)
             {
-                print_array(new_arr, &new_length);
+                print_array(new_arr, new_length);
             }
         }
     }
@@ -49,30 +49,25 @@ size_t input_length(int *code)
     {
         *code = ERR_LENGTH;
     }
+    
     return (size_t) length;
 }
 
-void input_array(int *arr, size_t *length, int *code)
+void input_array(int *arr, size_t length, int *code)
 {
     printf("Input array: ");
-    size_t index = 0;
-    char symbol;
-
-    while (scanf("%d%c", (arr+index), &symbol) == 2)
+    for (size_t index = 0; index < length && *code == ERR_OK; index++)
     {
-        index++;
-        if (symbol != ' ')
-            break;
+        if (scanf("%d", (arr + index)) != 1)
+            *code = ERR_INPUT_ARR;
     }
-    if (index != *length)
-        *code = ERR_INPUT_ARR;
 }
 
-void print_array(int *arr, size_t *length)
+void print_array(int *arr, size_t length)
 {
-    for (size_t i = 0; i < *length; i++)
+    for (size_t index = 0; index < length; index++)
     {
-        printf("%d ", *(arr+i));
+        printf("%d ", *(arr + index));
     }
     printf("\n");
 }
@@ -110,9 +105,9 @@ int is_armstrong(int number)
     return code;
 }
 
-void create_new_arr(int *arr, size_t *length, int *code, int *new_arr, size_t *new_length)
+void create_new_arr(int *arr, size_t length, int *code, int *new_arr, size_t *new_length)
 {
-    for (size_t index = 0; index < *length; index++)
+    for (size_t index = 0; index < length; index++)
     {
         if (is_armstrong(*(arr + index)))
         {

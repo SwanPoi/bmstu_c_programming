@@ -9,8 +9,8 @@
 #define SIZE_OF_ARRAY 10
 
 size_t input_length(int *code);
-void input_array(int *arr, size_t *length, int *code);
-void geometric_mean(int *arr, size_t *length, int *code, double *mean);
+void input_array(int *arr, size_t length, int *code);
+void geometric_mean(int *arr, size_t length, int *code, double *mean);
 
 int main(void)
 {
@@ -20,15 +20,16 @@ int main(void)
     if (rc == ERR_OK)
     {
         int arr[SIZE_OF_ARRAY];
-        input_array(arr, &length, &rc);
+        input_array(arr, length, &rc);
         if (rc == ERR_OK)
         {
             double positive_mean;
-            geometric_mean(arr, &length, &rc, &positive_mean);
+            geometric_mean(arr, length, &rc, &positive_mean);
             if (rc == ERR_OK)
                 printf("Geometric mean of positive elements: %lf\n", positive_mean);
         }
     }
+    
     return rc;
 }
 
@@ -40,29 +41,24 @@ size_t input_length(int *code)
     {
         *code = ERR_LENGTH;
     }
+    
     return (size_t) length;
 }
 
-void input_array(int *arr, size_t *length, int *code)
+void input_array(int *arr, size_t length, int *code)
 {
     printf("Input array: ");
-    size_t index = 0;
-    char symbol;
-
-    while (scanf("%d%c", (arr+index), &symbol) == 2)
+    for (size_t index = 0; index < length && *code == ERR_OK; index++)
     {
-        index++;
-        if (symbol != ' ')
-            break;
+        if (scanf("%d", (arr + index)) != 1)
+            *code = ERR_INPUT_ARR;
     }
-    if (index != *length)
-        *code = ERR_INPUT_ARR;
 }
 
-void geometric_mean(int *arr, size_t *length, int *code, double *mean)
+void geometric_mean(int *arr, size_t length, int *code, double *mean)
 {
     int quantity = 0, multi = 1;
-    for (size_t index = 0; index < *length; index++)
+    for (size_t index = 0; index < length; index++)
     {
         if (*(arr + index) > 0)
         {
