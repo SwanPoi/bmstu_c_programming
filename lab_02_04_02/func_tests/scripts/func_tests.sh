@@ -21,16 +21,40 @@ do
   else
     args_file=""
   fi
-  
-  if ./pos_case.sh "$in_file" "$out_file" "$args_file"; then
+  ./pos_case.sh "$in_file" "$out_file" "$args_file"
+  code=$?
+  if [ "$code" -eq 0 ]; then
     echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
-  else
-    echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+    if [ "$USE_VALGRIND" ]; then
+        echo -en "$GREEN""MEMORY PASSED!""$STANDART"
+    fi
+  else 
+    if [ "$code" -eq 1 ]; then
+        echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$RED""MEMORY FAILED!""$STANDART"
+        fi
+    fi
+    if [ "$code" -eq 2 ]; then
+        echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$RED""MEMORY FAILED!""$STANDART"
+        fi
+    fi
+    if [ "$code" -eq 3 ]; then
+        echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$GREEN""MEMORY PASSED!""$STANDART"
+        fi
+    fi
+    if [ "$code" -eq 4 ]; then
+        echo -en "$RED""TEST""$counter"" DIDN'T START!""$STANDART"
+    fi
+
     failed+=1
   fi
-  
+  echo -en "$ORANGE""##############""$STANDART"
 done
-echo -en "$ORANGE""################################""$STANDART"
 
 
 echo -en "$ORANGE""######## NEGATIVE TESTS ########""$STANDART"
@@ -44,15 +68,37 @@ do
     args_file=""
   fi
   
+  ./neg_case.sh "$in_file" "$args_file"
+  code=$?
   
-  if ./neg_case.sh "$in_file" "$args_file"; then
+  if [ "$code" -eq 0 ]; then
     echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
-  else
-    echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+    if [ "$USE_VALGRIND" ]; then
+        echo -en "$GREEN""MEMORY PASSED!""$STANDART"
+    fi
+  else 
+    if [ "$code" -eq 1 ]; then
+        echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$RED""MEMORY FAILED!""$STANDART"
+        fi
+    fi
+    if [ "$code" -eq 2 ]; then
+        echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$RED""MEMORY FAILED!""$STANDART"
+        fi
+    fi
+    if [ "$code" -eq 3 ]; then
+        echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        if [ "$USE_VALGRIND" ]; then
+            echo -en "$GREEN""MEMORY PASSED!""$STANDART"
+        fi
+    fi
     failed+=1
   fi
-  
+  echo -en "$ORANGE""##############""$STANDART"
 done
-echo -en "$ORANGE""################################""$STANDART"
+echo -en "$ORANGE""######### TESTS FINISHED! ########""$STANDART"
 
 exit $failed

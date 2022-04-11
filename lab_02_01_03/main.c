@@ -37,7 +37,7 @@ size_t input_length(int *code)
 {
     int length;
     printf("Input length of array: ");
-    if (scanf("%d", &length) != 1 || length > 10 || length <= 0)
+    if (scanf("%d", &length) != 1 || length > SIZE_OF_ARRAY || length <= 0)
     {
         *code = ERR_LENGTH;
     }

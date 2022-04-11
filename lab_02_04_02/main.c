@@ -35,12 +35,12 @@ void input_array(int *arr, size_t *length, int *code)
     printf("Input array: ");
     while (scanf("%d", &current_element) == 1 && index <= SIZE_OF_ARRAY)
     {
-        if (index != 10)
+        if (index != SIZE_OF_ARRAY)
             *(arr + index) = current_element;
         index++;
     }
 
-    if (index == 11)
+    if (index == SIZE_OF_ARRAY + 1)
         *code = OVERFLOW;
     else if (index == 0)
         *code = ERR_EMPTY_ERR;
