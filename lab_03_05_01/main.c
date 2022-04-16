@@ -42,8 +42,7 @@ int main(void)
             int array_of_necessary_numbers[SIZE_OF_ARRAY];
             size_t length_of_array = 0;
             
-            form_array(matrix, rows, columns, &rc, array_of_necessary_numbers, 
-                &length_of_array);
+            form_array(matrix, rows, columns, &rc, array_of_necessary_numbers, &length_of_array);
             
             if (rc == ERR_OK)
             {
