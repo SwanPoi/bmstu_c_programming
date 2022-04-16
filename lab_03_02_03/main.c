@@ -8,8 +8,7 @@
 #define ERR_SIZE 1
 #define ERR_INPUT_MATRIX 2
 #define ERR_NOT_DIGIT 3
-#define ERR_NO_NECESSARY_COLUMNS 4
-#define ERR_EMPTY_MATRIX 5
+#define ERR_EMPTY_MATRIX 4
 
 void input_size(size_t *rows, size_t *columns, int *code);
 size_t input_length(int *code, int max_length);
@@ -18,7 +17,7 @@ void transform(int **matrix, int *src, size_t rows, size_t columns);
 void input_matrix(int **matrix, size_t rows, size_t columns, int *code);
 void output_matrix(int **matrix, size_t rows, size_t columns);
 void delete_columns(int **matrix, size_t rows, size_t *columns, size_t column_number);
-void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int *code, int digit);
+void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit);
 int is_digit_in_number(int number, int standart);
 
 int main(void)
@@ -40,7 +39,7 @@ int main(void)
         
         if (rc == ERR_OK)
         {
-            find_and_delete_necessary_columns(matrix, rows, &columns, &rc, digit);
+            find_and_delete_necessary_columns(matrix, rows, &columns, digit);
             if (columns == 0)
                 rc = ERR_EMPTY_MATRIX;
             else
@@ -117,9 +116,9 @@ void delete_columns(int **matrix, size_t rows, size_t *columns, size_t column_nu
     (*columns)--; 
 }
 
-void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int *code, int digit)
+void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit)
 {
-    size_t cur_column = 0, count_deleted_column = 0;
+    size_t cur_column = 0;
     while (cur_column < *columns)
     {
         int digit_in_column = 0;
@@ -128,15 +127,10 @@ void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *column
                 digit_in_column = 1;
         
         if (digit_in_column)
-        {
             delete_columns(matrix, rows, columns, cur_column);
-            count_deleted_column++;
-        }
         else
             cur_column++;
     }
-    if (!count_deleted_column)
-        *code = ERR_NO_NECESSARY_COLUMNS;
 }
 
 int is_digit_in_number(int number, int standart)

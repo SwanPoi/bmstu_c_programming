@@ -9,7 +9,6 @@
 #define ERR_OK 0
 #define ERR_SIZE 1
 #define ERR_INPUT_MATRIX 2
-#define ERR_ONE_COLUMN 3
 
 int is_monotonous(int *line, size_t length);
 size_t input_length(int *code, int max_length);
@@ -50,9 +49,6 @@ void input_size(size_t *rows, size_t *columns, int *code)
 {
     *rows = input_length(code, ROWS);
     *columns = input_length(code, COLUMNS);
-    
-    if (*columns == 1)
-        *code = ERR_ONE_COLUMN;
 }    
 
 size_t input_length(int *code, int max_length)
@@ -108,7 +104,10 @@ int is_monotonous(int *line, size_t length)
 void checking_monotonous_rows(int **matrix, size_t rows, size_t columns, int *monotonous_array)
 {
     for (size_t i = 0; i < rows; i++)
-        *(monotonous_array + i) = is_monotonous(*(matrix + i), columns);
+        if (columns == 1)
+            *(monotonous_array + i) = 0;
+        else
+            *(monotonous_array + i) = is_monotonous(*(matrix + i), columns);
 }
 
 void print_array(int *arr, size_t length)

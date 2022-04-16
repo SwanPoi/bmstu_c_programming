@@ -95,7 +95,7 @@ void swap(int *first, int *second)
     *second = temporary;
 }
 
- void butterfly_sort(int **matrix, size_t rows, size_t columns)
+void butterfly_sort(int **matrix, size_t rows, size_t columns)
 {
     size_t center = rows / 2;
     
@@ -107,7 +107,7 @@ void swap(int *first, int *second)
         {
             swap(matrix[i] + j, matrix[i] + (columns - j - 1));
             if (i + 1 != center || rows % 2 == 0)
-                swap(matrix[rows - i - 1] + j, matrix[rows - i -1] + (columns - j -1));
+                swap(matrix[rows - i - 1] + j, matrix[rows - i - 1] + (columns - j - 1));
         }
 }
  
