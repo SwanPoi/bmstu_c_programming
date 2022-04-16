@@ -33,25 +33,28 @@ do
         echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
         if [ "$USE_VALGRIND" ]; then
             echo -en "$RED""MEMORY FAILED!""$STANDART"
+            failed+=1
         fi
     fi
     if [ "$code" -eq 2 ]; then
         echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        failed+=1
         if [ "$USE_VALGRIND" ]; then
             echo -en "$RED""MEMORY FAILED!""$STANDART"
         fi
     fi
     if [ "$code" -eq 3 ]; then
         echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        failed+=1
         if [ "$USE_VALGRIND" ]; then
             echo -en "$GREEN""MEMORY PASSED!""$STANDART"
         fi
     fi
     if [ "$code" -eq 4 ]; then
         echo -en "$RED""TEST""$counter"" DIDN'T START!""$STANDART"
+        failed+=1
     fi
 
-    failed+=1
   fi
   echo -en "$ORANGE""##############""$STANDART"
 done
@@ -81,21 +84,23 @@ do
         echo -en "$GREEN""TEST""$counter"" PASSED!""$STANDART"
         if [ "$USE_VALGRIND" ]; then
             echo -en "$RED""MEMORY FAILED!""$STANDART"
+            failed+=1
         fi
     fi
     if [ "$code" -eq 2 ]; then
         echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        failed+=1
         if [ "$USE_VALGRIND" ]; then
             echo -en "$RED""MEMORY FAILED!""$STANDART"
         fi
     fi
     if [ "$code" -eq 3 ]; then
         echo -en "$RED""TEST""$counter"" FAILED!""$STANDART"
+        failed+=1
         if [ "$USE_VALGRIND" ]; then
             echo -en "$GREEN""MEMORY PASSED!""$STANDART"
         fi
     fi
-    failed+=1
   fi
   echo -en "$ORANGE""##############""$STANDART"
 done
