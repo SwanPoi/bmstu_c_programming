@@ -17,8 +17,7 @@ void input_size(size_t *rows, size_t *columns, int *code);
 void transform(int **matrix, int *src, size_t rows, size_t columns);
 void input_matrix(int **matrix, size_t rows, size_t columns, int *code);
 void output_matrix(int **matrix, size_t rows, size_t columns);
-void form_array_of_necessary_numbers(int **matrix, size_t rows, size_t columns, 
-                                     int *code, int *array, size_t *length);
+void form_array(int **matrix, size_t rows, size_t columns, int *code, int *array, size_t *length);
 void change_matrix_after_shift(int **matrix, size_t rows, size_t columns, int *array, size_t length);
 void circular_shift(int *array, size_t length, size_t step);
 void circular_shift_of_one_element(int *array, size_t length);
@@ -43,7 +42,7 @@ int main(void)
             int array_of_necessary_numbers[SIZE_OF_ARRAY];
             size_t length_of_array = 0;
             
-            form_array_of_necessary_numbers(matrix, rows, columns, &rc, array_of_necessary_numbers, 
+            form_array(matrix, rows, columns, &rc, array_of_necessary_numbers, 
                 &length_of_array);
             
             if (rc == ERR_OK)
@@ -102,8 +101,7 @@ void output_matrix(int **matrix, size_t rows, size_t columns)
     }
 }
 
-void form_array_of_necessary_numbers(int **matrix, size_t rows, size_t columns, int *code, int *array, 
-                                     size_t *length)
+void form_array(int **matrix, size_t rows, size_t columns, int *code, int *array, size_t *length)
 {
     for (size_t i = 0; i < rows; i++)
         for (size_t j = 0; j < columns; j++)

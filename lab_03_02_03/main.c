@@ -17,7 +17,7 @@ void transform(int **matrix, int *src, size_t rows, size_t columns);
 void input_matrix(int **matrix, size_t rows, size_t columns, int *code);
 void output_matrix(int **matrix, size_t rows, size_t columns);
 void delete_columns(int **matrix, size_t rows, size_t *columns, size_t column_number);
-void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit);
+void find_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit);
 int is_digit_in_number(int number, int standart);
 
 int main(void)
@@ -39,7 +39,7 @@ int main(void)
         
         if (rc == ERR_OK)
         {
-            find_and_delete_necessary_columns(matrix, rows, &columns, digit);
+            find_necessary_columns(matrix, rows, &columns, digit);
             if (columns == 0)
                 rc = ERR_EMPTY_MATRIX;
             else
@@ -116,7 +116,7 @@ void delete_columns(int **matrix, size_t rows, size_t *columns, size_t column_nu
     (*columns)--; 
 }
 
-void find_and_delete_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit)
+void find_necessary_columns(int **matrix, size_t rows, size_t *columns, int digit)
 {
     size_t cur_column = 0;
     while (cur_column < *columns)
