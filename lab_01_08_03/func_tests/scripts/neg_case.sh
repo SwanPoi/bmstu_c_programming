@@ -1,5 +1,7 @@
 #!/bin/bash
 
+code=0
+
 if [ "$2" != "" ]; then
   args=$(cat "$2")
 else
@@ -7,13 +9,23 @@ else
 fi
 
 if [ "$USE_VALGRIND" ]; then
-  command="valgrind ../../app.exe $args < $1 > ../../outfile.txt"
+  command="valgrind -q --log-file=../../valgrind_message.txt ../../app.exe $args < $1 > ../../outfile.txt"
 else
   command="../../app.exe $args < $1 > ../../outfile.txt"
 fi
 
 if eval "$command"; then
-  exit 1
+  if [ -s ../../valgrind_message.txt ]; then
+    code=2
+  else
+    code=3
+  fi
 else
-  exit 0
+  if [ -s ../../valgrind_message.txt ]; then
+    code=1
+  else
+    code=0
+  fi
 fi
+
+exit $code
