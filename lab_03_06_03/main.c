@@ -26,7 +26,7 @@ int main(void)
         int src_matrix[ROWS][COLUMNS];
         int *matrix[ROWS];
         
-        transform(matrix, &src_matrix[0][0], rows, columns);
+        transform(matrix, src_matrix[0], rows, columns);
         input_spiral_matrix(matrix, (int) rows);
         
         output_matrix(matrix, rows, columns);
