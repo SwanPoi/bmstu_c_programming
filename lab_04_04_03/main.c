@@ -36,9 +36,9 @@ int main(void)
             is_valid = check_telephone(string, begin, end);
 
         if (is_valid == YES)
-            printf("YES\n");
+            printf("YES");
         else
-            printf("NO\n");
+            printf("NO");
     }
     else
         rc = ERR_INPUT;
