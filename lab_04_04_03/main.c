@@ -21,11 +21,13 @@ int main(void)
 {
     int rc = ERR_OK;
     int is_valid = NO;
-    char string[SIZE_OF_STR + 1];
+    char string[SIZE_OF_STR + 2];
 
-    char *check = fgets(string, SIZE_OF_STR + 1, stdin);
+    char *check = fgets(string, SIZE_OF_STR + 2, stdin);
 
-    if (check && !(strlen(string) == SIZE_OF_STR && *(string + SIZE_OF_STR + 1) != '\0'))
+    if (!check || strlen(string) >= SIZE_OF_STR)
+        rc = ERR_INPUT;
+    else
     {
         size_t length_of_string = strlen(string);
         int begin = check_begin_tabulation(string, length_of_string);
@@ -39,8 +41,6 @@ int main(void)
         else
             printf("NO\n");
     }
-    else
-        rc = ERR_INPUT;
 
     return rc;
 }
@@ -126,8 +126,8 @@ int check_after_operator_code(char *begin, char *end)
 
     if (*begin == '-' && *(begin + 4) == '-' && *(begin + 7) == '-' && (begin + 9) == end)
         is_valid = check_if_only_digits(begin + 1, begin + 4)
-                   & check_if_only_digits(begin + 5, begin + 7)
-                   & check_if_only_digits(begin + 8, begin + 10);
+            & check_if_only_digits(begin + 5, begin + 7)
+            & check_if_only_digits(begin + 8, begin + 10);
 
     return is_valid;
 }
