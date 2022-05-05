@@ -23,10 +23,9 @@ int main(void)
     int is_valid = NO;
     char string[SIZE_OF_STR + 1];
 
-    printf("Input first string: ");
     char *check = fgets(string, SIZE_OF_STR, stdin);
 
-    if (check)
+    if (check && !(strlen(string) == SIZE_OF_STR && *(string + SIZE_OF_STR + 1) != '\0'))
     {
         size_t length_of_string = strlen(string);
         int begin = check_begin_tabulation(string, length_of_string);
@@ -36,9 +35,9 @@ int main(void)
             is_valid = check_telephone(string, begin, end);
 
         if (is_valid == YES)
-            printf("YES");
+            printf("YES\n");
         else
-            printf("NO");
+            printf("NO\n");
     }
     else
         rc = ERR_INPUT;
