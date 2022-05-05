@@ -15,9 +15,7 @@ size_t get_words(char *str, char *split, char (*words)[SIZE_OF_WORD + 1]);
 int is_symbol_in_list(char symbol, char *split);
 int search_in_array(char *element, char (*words)[SIZE_OF_WORD + 1], size_t length);
 int search_in_self(size_t index, char (*words)[SIZE_OF_WORD + 1], size_t length);
-int form_array_of_uniq_words(char (*words_in_first)[SIZE_OF_WORD + 1], size_t first_length,
-                             char (*words_in_second)[SIZE_OF_WORD + 1], size_t second_length,
-                             char (*uniq_words)[SIZE_OF_WORD + 1]);
+int form_array_of_uniq_words(char (*words_in_first)[SIZE_OF_WORD + 1], size_t first_length, char (*words_in_second)[SIZE_OF_WORD + 1], size_t second_length, char (*uniq_words)[SIZE_OF_WORD + 1]);
 void substr_cpy(char *src_start, char *src_end, char *dest);
 void print_array(char (*words)[SIZE_OF_WORD + 1], size_t length);
 
@@ -45,16 +43,15 @@ int main(void)
 
             if (count_words_in_first && count_words_in_second)
             {
-                int count_uniq = form_array_of_uniq_words(words_in_first, count_words_in_first, words_in_second,
-                                                        count_words_in_second, uniq_words);
+                int count_uniq = form_array_of_uniq_words(words_in_first, count_words_in_first, words_in_second, count_words_in_second, uniq_words);
 
                 if (count_uniq)
                     print_array(uniq_words, count_uniq);
                 else
                     rc = ERR_NO_UNIQ_WORDS;
-        }
-        else
-            rc = ERR_NO_WORDS;
+            }
+            else
+                rc = ERR_NO_WORDS;
         }
         else
             rc = ERR_INPUT;
@@ -145,15 +142,13 @@ void print_array(char (*words)[SIZE_OF_WORD + 1], size_t length)
     printf("\n");
 }
 
-int form_array_of_uniq_words(char (*words_in_first)[SIZE_OF_WORD + 1], size_t first_length,
-                             char (*words_in_second)[SIZE_OF_WORD + 1], size_t second_length,
-                             char (*uniq_words)[SIZE_OF_WORD + 1])
+int form_array_of_uniq_words(char (*words_in_first)[SIZE_OF_WORD + 1], size_t first_length, char (*words_in_second)[SIZE_OF_WORD + 1], size_t second_length, char (*uniq_words)[SIZE_OF_WORD + 1])
 {
     int count_uniq = 0;
 
     for (size_t i = 0; i < first_length; i++)
         if (search_in_array(*(words_in_first + i), words_in_second, second_length) == NOT_IN_LIST &&
-                search_in_self(i, words_in_first, first_length) == NOT_IN_LIST)
+            search_in_self(i, words_in_first, first_length) == NOT_IN_LIST)
         {
             strcpy(*(uniq_words + count_uniq), *(words_in_first + i));
             count_uniq++;

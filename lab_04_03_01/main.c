@@ -16,7 +16,7 @@ void only_uniq_symbols(char full_word[SIZE_OF_WORD + 1], char new_word[SIZE_OF_W
 int main(void)
 {
     int rc = ERR_OK;
-    char string[SIZE_OF_STR];
+    char string[SIZE_OF_STR + 1];
     char words[SIZE_OF_STR / 2][SIZE_OF_WORD + 1];
     char uniq_words[SIZE_OF_STR + 1];
 
@@ -68,7 +68,7 @@ size_t get_uniq_words(char (*src_words)[SIZE_OF_WORD + 1], size_t length, char u
     for (size_t i = length - 1; i > 0; i--)
         if (strcmp(*(src_words + i - 1), *(src_words + length - 1)))
         {
-            char not_full_word[SIZE_OF_WORD + 1] = {'\n'};
+            char not_full_word[SIZE_OF_WORD + 1] = { "\n" };
             only_uniq_symbols(*(src_words + i - 1), not_full_word);
             if (i == length - 1)
                 strcpy(unique_words, not_full_word);
