@@ -23,7 +23,7 @@ int main(void)
     int is_valid = NO;
     char string[SIZE_OF_STR + 1];
 
-    char *check = fgets(string, SIZE_OF_STR, stdin);
+    char *check = fgets(string, SIZE_OF_STR + 1, stdin);
 
     if (check && !(strlen(string) == SIZE_OF_STR && *(string + SIZE_OF_STR + 1) != '\0'))
     {
@@ -81,6 +81,8 @@ int check_telephone(char *string, int begin, int end)
         {
             valid_country_code = check_if_only_digits(string + begin + 1, begin_of_operator_code);
         }
+        else if (*(string + begin) != '(')
+            valid_country_code = NO;
 
         valid_operator_code = check_operator_code(begin_of_operator_code, end_of_operator_code);
         valid_else = check_after_operator_code(end_of_operator_code + 1, string + end);
@@ -124,8 +126,8 @@ int check_after_operator_code(char *begin, char *end)
 
     if (*begin == '-' && *(begin + 4) == '-' && *(begin + 7) == '-' && (begin + 9) == end)
         is_valid = check_if_only_digits(begin + 1, begin + 4)
-            & check_if_only_digits(begin + 5, begin + 7)
-            & check_if_only_digits(begin + 8, begin + 10);
+                   & check_if_only_digits(begin + 5, begin + 7)
+                   & check_if_only_digits(begin + 8, begin + 10);
 
     return is_valid;
-} 
+}
