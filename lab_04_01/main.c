@@ -49,8 +49,7 @@ size_t my_strspn(const char *s, const char *accept)
 {
     size_t index = 0;
 
-    while (*(s + index) && *(accept + index) && *(s + index) == *(accept + index))
-        index++;
+    for (; *(s + index) && my_strchr(accept, *(s + index)); index++);
 
     return index;
 }
@@ -73,7 +72,7 @@ char *my_strpbrk(const char *s, const char *accept)
     return *s ? (char *) s : NULL;
 }
 
-char * my_strchr(const char *s, int c)
+char *my_strchr(const char *s, int c)
 {
     while (*s && *s != c)
         s++;
