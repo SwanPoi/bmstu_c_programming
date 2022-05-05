@@ -75,8 +75,7 @@ char *my_strpbrk(const char *s, const char *accept)
 
 char *my_strchr(const char *s, int c)
 {
-    while (*s && *s != c)
-        s++;
-
-    return *s ? (char *) s : NULL;
-} 
+    for (; *s != c && *s; s++);
+    
+    return (!*s) ? (0) : (char *) s;
+}
