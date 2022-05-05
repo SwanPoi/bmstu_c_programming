@@ -4,7 +4,6 @@
 size_t my_strspn(const char *s, const char *accept);
 size_t my_strcspn(const char *s, const char *reject);
 char *my_strpbrk(const char *s, const char *accept);
-char *my_strchr(const char *s, int c);
 
 int main(void)
 {
@@ -59,7 +58,7 @@ size_t my_strcspn(const char *s, const char *reject)
 {
     size_t index = 0;
 
-    while (*(s + index) && !my_strchr(reject, *(s + index)))
+    while (*(s + index) && !strchr(reject, *(s + index)))
         index++;
 
     return index;
@@ -67,15 +66,9 @@ size_t my_strcspn(const char *s, const char *reject)
 
 char *my_strpbrk(const char *s, const char *accept)
 {
-    while (*s && !my_strchr(accept, *s))
+    while (*s && !strchr(accept, *s))
         s++;
 
     return *s ? (char *) s : NULL;
 }
 
-char *my_strchr(const char *s, int c)
-{
-    for (; *s != c && *s; s++);
-    
-    return (!*s) ? (0) : (char *) s;
-}
