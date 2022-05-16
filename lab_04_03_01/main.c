@@ -9,15 +9,17 @@
 #define ERR_NO_WORDS 2
 #define ERR_NO_UNIQ_WORDS 3
 
-size_t get_words(char *str, char *split, char (*words)[SIZE_OF_WORD + 1]);
-size_t get_uniq_words(char (*src_words)[SIZE_OF_WORD + 1], size_t length, char unique_words[SIZE_OF_STR + 1]);
+size_t get_words(char *str, char *split, char **words);
+size_t get_uniq_words(char **src_words, size_t length, char unique_words[SIZE_OF_STR + 1]);
 void only_uniq_symbols(char full_word[SIZE_OF_WORD + 1], char new_word[SIZE_OF_WORD + 1]);
+void transform(char **matrix, char *src, size_t rows, size_t columns);
 
 int main(void)
 {
     int rc = ERR_OK;
     char string[SIZE_OF_STR + 1];
-    char words[SIZE_OF_STR / 2][SIZE_OF_WORD + 1];
+    char matr_words[SIZE_OF_WORD / 2][SIZE_OF_STR + 1];
+    char *words[SIZE_OF_WORD / 2];
     char uniq_words[SIZE_OF_STR + 1];
 
     printf("Input first string: ");
@@ -25,6 +27,7 @@ int main(void)
     
     if (check)
     {
+        transform(words, *matr_words, SIZE_OF_WORD / 2, SIZE_OF_STR + 1);
         size_t count_words = get_words(string, " ,.;:-!?\n\t", words);
 
         if (count_words)
@@ -45,7 +48,7 @@ int main(void)
     return rc;
 }
 
-size_t get_words(char *str, char *split, char (*words)[SIZE_OF_WORD + 1])
+size_t get_words(char *str, char *split, char **words)
 {
     size_t count_words = 0;
 
@@ -53,7 +56,7 @@ size_t get_words(char *str, char *split, char (*words)[SIZE_OF_WORD + 1])
 
     while (word)
     {
-        strcpy(*(words + count_words), word);
+        strcpy(words[count_words], word);
 
         word = strtok(NULL, split);
         count_words++;
@@ -62,14 +65,14 @@ size_t get_words(char *str, char *split, char (*words)[SIZE_OF_WORD + 1])
     return count_words;
 }
 
-size_t get_uniq_words(char (*src_words)[SIZE_OF_WORD + 1], size_t length, char unique_words[SIZE_OF_STR + 1])
+size_t get_uniq_words(char **src_words, size_t length, char unique_words[SIZE_OF_STR + 1])
 {
     size_t uniq_count = 0;
     for (size_t i = length - 1; i > 0; i--)
-        if (strcmp(*(src_words + i - 1), *(src_words + length - 1)))
+        if (strcmp(src_words[i - 1], src_words[length - 1]))
         {
             char not_full_word[SIZE_OF_WORD + 1] = { "\n" };
-            only_uniq_symbols(*(src_words + i - 1), not_full_word);
+            only_uniq_symbols(src_words[i - 1], not_full_word);
             if (i == length - 1)
                 strcpy(unique_words, not_full_word);
             else
@@ -89,12 +92,19 @@ void only_uniq_symbols(char full_word[SIZE_OF_WORD + 1], char new_word[SIZE_OF_W
     size_t uniq_index = 0;
     while (*(full_word + full_index))
     {
-        if (!uniq_index || !strchr(new_word, *(full_word + full_index)))
+        if (!uniq_index || !strchr(new_word, full_word[full_index]))
         {
-            *(new_word + uniq_index) = *(full_word + full_index);
+            new_word[uniq_index] = full_word[full_index];
             uniq_index++;
         }
         full_index++;
     }
-    *(new_word + uniq_index) = '\0';
+    new_word[uniq_index] = '\0';
 }
+
+void transform(char **matrix, char *src, size_t rows, size_t columns)
+{
+    for (size_t i = 0; i < rows; i++)
+        matrix[i] = src + i * columns;
+}
+
