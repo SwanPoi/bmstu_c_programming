@@ -8,9 +8,9 @@ int main(void)
     int code = process(stdin, &index);
     
     if (code == ERR_OK)
-        fprintf(stdout, "%zu\n", index);
+        printf("%zu\n", index);
     else
-        fprintf(stderr, "There is no input\n");
+        printf("There is no input\n");
     
     return code;
 }

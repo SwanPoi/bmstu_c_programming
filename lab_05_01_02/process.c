@@ -11,7 +11,7 @@ int process(FILE *f, size_t *index)
         int cur_index = 1;
         int max_element = cur_element;
         
-        while (fscanf(f, "%d", &cur_element))
+        while (fscanf(f, "%d", &cur_element) == 1)
         {
             cur_index++;
             
