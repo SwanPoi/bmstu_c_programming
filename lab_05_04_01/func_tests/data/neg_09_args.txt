@@ -1,0 +1,1 @@
+st ../data/neg_09_in.txt 

@@ -1,0 +1,12 @@
+Ivanov
+Pavel
+1 2 4 5
+Polyakov
+Ilya
+0 8 4 2
+Kurbatov
+Pavel
+1 4 2 3
+Ivanov
+Aleksei
+3 4 1 3

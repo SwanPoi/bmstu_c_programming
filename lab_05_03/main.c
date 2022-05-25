@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     else
         rc = ERR_INVALID_ARGS;
         
-    if (rc == ERR_OK)
+    if (rc != ERR_OPEN && rc != ERR_INVALID_ARGS)
         fclose(file);
         
     return rc;
