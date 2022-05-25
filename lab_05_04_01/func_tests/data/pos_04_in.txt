@@ -1,6 +1,6 @@
 Ivanov
 Ivan
-9 10 5 4
+5 1 5 4
 Levanov
 Oleg
 2 3 4 5

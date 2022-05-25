@@ -1,1 +1,0 @@
-dt ../data/neg_14_in.txt 

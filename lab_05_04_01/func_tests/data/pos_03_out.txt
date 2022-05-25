@@ -1,6 +1,6 @@
 Ivanov
 Ivan
-9 10 5 4 
+2 1 5 4 
 Ivanchenko
 Ilya
 3 5 4 2 

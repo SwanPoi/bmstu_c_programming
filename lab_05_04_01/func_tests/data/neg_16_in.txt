@@ -1,6 +1,0 @@
-Ivanov
-Ivan
-9 8 7
-Lobanov
-Oleg
-9 0 8 7

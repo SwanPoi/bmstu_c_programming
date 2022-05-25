@@ -1,1 +1,1 @@
-ft ../data/neg_13_in.txt ../../out.txt Iv   
+st 

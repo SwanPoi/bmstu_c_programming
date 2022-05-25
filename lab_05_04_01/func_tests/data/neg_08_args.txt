@@ -1,1 +1,1 @@
-st ../data/neg_08_in.txt 
+st ./data.txt 

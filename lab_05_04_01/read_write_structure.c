@@ -6,13 +6,14 @@
 #include "read_write_structure.h"
 
 // Считывание структуры из файла
-int read_structure(FILE *file, Student *student)
+int read_structure(FILE *file, student *student)
 {
     int code = ERR_OK;
     
-    if (!feof(file) && fgets(student->surname, SURNAME + 1, file) != NULL && check_correct_string(student->surname, SURNAME) == ERR_OK)
+    //if (!feof(file) && fgets(student->surname, SURNAME + 1, file) != NULL && check_correct_string(student->surname, SURNAME) == ERR_OK)
+    if (!feof(file) && fscanf(file, "%s", student->surname) == 1 && strlen(student->surname) <= SURNAME)
     {
-        if (!feof(file) && fgets(student->name, NAME + 1, file) != NULL && check_correct_string(student->name, NAME) == ERR_OK)
+        if (!feof(file) && fscanf(file, "%s", student->name) == 1 && strlen(student->name) <= NAME)
         {
             for (int i = 0; i < MARKS && code == ERR_OK; i++)
                 if (fscanf(file, "%u", (student->marks + i)) != 1)
@@ -21,7 +22,7 @@ int read_structure(FILE *file, Student *student)
         else
             code = ERR_READ;
         
-        fscanf(file, "\n");
+         fscanf(file, "\n");
     }
     else
         code = ERR_READ_STRING;
@@ -30,9 +31,9 @@ int read_structure(FILE *file, Student *student)
 }
 
 // Вывод структуры на экран
-void print_structure(Student *student)
+void print_structure(student *student)
 {
-    printf("%s%s", student->surname, student->name);
+    printf("%s\n%s\n", student->surname, student->name);
     
     for (int i = 0; i < MARKS; i++)
         printf("%u ", student->marks[i]);
@@ -40,27 +41,11 @@ void print_structure(Student *student)
     printf("\n");
 }
 
-// Проверка корректности строки
-int check_correct_string(char *string, int size)
-{
-    int code = ERR_OK;
-    int len = strlen(string);
-    
-    if (len > size || len == 0 || *(string + len - 1) != '\n')
-        code = ERR_READ_STRING;
-    else
-        for (; *string != '\n' && code == ERR_OK; string++)
-            if (!isalpha(*string))
-                code = ERR_READ_STRING;
-            
-    return code;
-}
-
 // Подсчет количества структур в файле
 int count_of_structures_in_file(FILE *file, int *code)
 {
     int count = 0;
-    Student student;
+    student student;
     
     while (!feof(file) && *code == ERR_OK)
     {
@@ -74,7 +59,7 @@ int count_of_structures_in_file(FILE *file, int *code)
 }
 
 // Заполнение массива структур из файла
-int fill_group(FILE *file, Student *group, int count)
+int fill_group(FILE *file, student *group, int count)
 {
     int code = ERR_OK;
     
@@ -85,18 +70,18 @@ int fill_group(FILE *file, Student *group, int count)
 }
 
 // Печать массива структур
-void print_group(Student *group, int count)
+void print_group(student *group, int count)
 {
     for (int i = 0; i < count; i++)
         print_structure(group + i);
 }
 
 // Запись структуры в файл
-int put_struct_in_file(FILE *dst, Student *student)
+int put_struct_in_file(FILE *dst, student *student)
 {
     int code = ERR_OK;
     
-    if (fprintf(dst, "%s", student->surname) > -1 && fprintf(dst, "%s", student->name) > -1)
+    if (fprintf(dst, "%s\n", student->surname) > -1 && fprintf(dst, "%s\n", student->name) > -1)
     {
         for (int i = 0; i < MARKS && code == ERR_OK; i++)
             if (fprintf(dst, "%u ", student->marks[i]) < 0)
@@ -112,7 +97,7 @@ int put_struct_in_file(FILE *dst, Student *student)
 }
 
 // Запись массива структур в файл
-int put_all_structs_in_file(FILE *dst, Student *group, int count)
+int put_all_structs_in_file(FILE *dst, student *group, int count)
 {
     int code = ERR_OK;
     
@@ -123,7 +108,7 @@ int put_all_structs_in_file(FILE *dst, Student *group, int count)
 }
 
 // Формирование массива структур из файла
-int init_array_of_structs(FILE *file, int *count_structures, Student *group)
+int init_array_of_structs(FILE *file, int *count_structures, student *group)
 {
     int code = ERR_OK;
     

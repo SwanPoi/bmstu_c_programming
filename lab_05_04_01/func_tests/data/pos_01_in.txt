@@ -1,6 +1,6 @@
 Evanov
 Ivan
-9 10 5 4
+4 1 5 4
 Levanov
 Oleg
 2 3 4 5

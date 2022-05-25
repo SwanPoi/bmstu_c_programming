@@ -9,13 +9,13 @@
 int search_and_write(FILE *src, FILE *dst, char *substr)
 {
     int count_structures;
-    Student group[NMAX];
+    student group[NMAX];
     
     int code = init_array_of_structs(src, &count_structures, group);
     
     if (code == ERR_OK)
     {
-        Student group_startwith[NMAX];
+        student group_startwith[NMAX];
             
         int count_startswith = form_arr_startwith(group, count_structures, group_startwith, substr);
 
@@ -27,7 +27,7 @@ int search_and_write(FILE *src, FILE *dst, char *substr)
 }
 
 // Формирование массива структур студентов, фамилии которых начинаются с подстроки
-int form_arr_startwith(Student *group, int count_group, Student *startswith, char *substr)
+int form_arr_startwith(student *group, int count_group, student *startswith, char *substr)
 {
     int count_startswith = 0;
     
@@ -45,7 +45,7 @@ int form_arr_startwith(Student *group, int count_group, Student *startswith, cha
 int sort_in_file(FILE *file)
 {
     int count_structures;
-    Student group[NMAX];
+    student group[NMAX];
     
     int code = init_array_of_structs(file, &count_structures, group);
     
@@ -60,7 +60,7 @@ int sort_in_file(FILE *file)
 }
 
 // Сортировка студентов по фамилиям
-void sort_structures(Student *group, int count)
+void sort_structures(student *group, int count)
 {
     for (int i = 0; i < count - 1; i++)
         for (int j = i + 1; j < count; j++)
@@ -69,7 +69,7 @@ void sort_structures(Student *group, int count)
 }
 
 // Сравнение двух студентов по фамилиям и, если они одинаковые, по именам
-int compare_students(Student *left_student, Student *right_student)
+int compare_students(student *left_student, student *right_student)
 {
     int compare_surnames = strcmp(left_student->surname, right_student->surname);
     
@@ -77,9 +77,9 @@ int compare_students(Student *left_student, Student *right_student)
 }
 
 // Перестановка местами двух структур в массиве
-void swap_structures(Student *left, Student *right)
+void swap_structures(student *left, student *right)
 {
-    Student temporary = *left;
+    student temporary = *left;
     *left = *right;
     *right = temporary;
 }
@@ -89,7 +89,7 @@ int delete_from_file(char *filename)
 {
     int code = ERR_OK;
     int count_structures = 0;
-    Student group[NMAX];
+    student group[NMAX];
     
     FILE *file = fopen(filename, "r");
     
@@ -127,7 +127,7 @@ int delete_from_file(char *filename)
 }
 
 // Получение суммы оценок студента
-double sum_student_marks(Student *student)
+double sum_student_marks(student *student)
 {
     double sum = 0;
     
@@ -138,7 +138,7 @@ double sum_student_marks(Student *student)
 }
 
 // Получение средней оценки по всем студентам
-double get_average_mark_in_whole(Student *group, int count)
+double get_average_mark_in_whole(student *group, int count)
 {
     double sum = 0;
     
@@ -149,7 +149,7 @@ double get_average_mark_in_whole(Student *group, int count)
 }
 
 // Удаление студента из массива
-void delete_student(Student *group, int *count, int index)
+void delete_student(student *group, int *count, int index)
 {
     for (int i = index; i < *count - 1; i++)
         group[i] = group[i + 1];
@@ -158,7 +158,7 @@ void delete_student(Student *group, int *count, int index)
 }
 
 // Удаление студентов, чьи средние оценки меньше средней общей оценки
-void do_removal(Student *group, int *count, double average_in_file)
+void do_removal(student *group, int *count, double average_in_file)
 {
     int index = 0;
     
