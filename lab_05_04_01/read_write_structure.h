@@ -3,7 +3,6 @@
 
 int read_structure(FILE *file, student *student);
 void print_structure(student *student);
-int check_correct_string(char *string, int size);
 int count_of_structures_in_file(FILE *file, int *code);
 int fill_group(FILE *file, student *group, int count);
 void print_group(student *group, int count);

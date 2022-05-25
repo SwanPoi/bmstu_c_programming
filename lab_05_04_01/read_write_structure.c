@@ -10,7 +10,6 @@ int read_structure(FILE *file, student *student)
 {
     int code = ERR_OK;
     
-    //if (!feof(file) && fgets(student->surname, SURNAME + 1, file) != NULL && check_correct_string(student->surname, SURNAME) == ERR_OK)
     if (!feof(file) && fscanf(file, "%s", student->surname) == 1 && strlen(student->surname) <= SURNAME)
     {
         if (!feof(file) && fscanf(file, "%s", student->name) == 1 && strlen(student->name) <= NAME)
