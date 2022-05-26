@@ -17,17 +17,18 @@ void transform(char **matrix, char *src, size_t rows, size_t columns);
 int main(void)
 {
     int rc = ERR_OK;
-    char string[SIZE_OF_STR + 1];
-    char matr_words[SIZE_OF_WORD / 2][SIZE_OF_STR + 1];
-    char *words[SIZE_OF_WORD / 2];
+    char string[SIZE_OF_STR + 2] = { 0 };
+    char matr_words[SIZE_OF_STR / 2][SIZE_OF_WORD + 1];
+    char *words[SIZE_OF_STR / 2];
     char uniq_words[SIZE_OF_STR + 1];
 
     printf("Input first string: ");
-    char *check = fgets(string, SIZE_OF_STR, stdin);
+    char *check = fgets(string, SIZE_OF_STR + 1, stdin);
     
-    if (check)
+    if ((check != 0) && ((string[strlen(string) - 1] == '\n' || string[strlen(string) - 1] == '\0')))
     {
-        transform(words, *matr_words, SIZE_OF_WORD / 2, SIZE_OF_STR + 1);
+        transform(words, *matr_words, SIZE_OF_STR / 2, SIZE_OF_WORD + 1);
+
         size_t count_words = get_words(string, " ,.;:-!?\n\t", words);
 
         if (count_words)
@@ -57,7 +58,7 @@ size_t get_words(char *str, char *split, char **words)
     while (word)
     {
         strcpy(words[count_words], word);
-
+        printf("Count: %zu\n", count_words);
         word = strtok(NULL, split);
         count_words++;
     }
@@ -107,4 +108,3 @@ void transform(char **matrix, char *src, size_t rows, size_t columns)
     for (size_t i = 0; i < rows; i++)
         matrix[i] = src + i * columns;
 }
-
