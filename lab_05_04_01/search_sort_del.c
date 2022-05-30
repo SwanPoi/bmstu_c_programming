@@ -19,8 +19,10 @@ int search_and_write(FILE *src, FILE *dst, char *substr)
             
         int count_startswith = form_arr_startwith(group, count_structures, group_startwith, substr);
 
-        print_group(group_startwith, count_startswith);
         code = put_all_structs_in_file(dst, group_startwith, count_startswith);
+        
+        if (code == ERR_OK)
+            print_group(group_startwith, count_startswith);
     }
     
     return code;
@@ -42,19 +44,41 @@ int form_arr_startwith(student *group, int count_group, student *startswith, cha
 }
 
 // Пункт a): сортировка структур по фамилиям и, если они совпадают, по именам
-int sort_in_file(FILE *file)
+int sort_in_file(char *filename)
 {
+    int code = ERR_OK;
     int count_structures;
     student group[NMAX];
+    FILE *file = fopen(filename, "r");
     
-    int code = init_array_of_structs(file, &count_structures, group);
-    
-    if (code == ERR_OK)
+    if (file)
     {
-        sort_structures(group, count_structures);
+        code = init_array_of_structs(file, &count_structures, group);
         
-        print_group(group, count_structures);
+        if (code == ERR_OK)
+            sort_structures(group, count_structures);
+            
+        fclose(file);
+        
+        if (code == ERR_OK)
+        {
+            file = fopen(filename, "w");
+                
+            if (file)
+            {
+                code = put_all_structs_in_file(file, group, count_structures);
+                    
+                if (code == ERR_OK)
+                    print_group(group, count_structures);
+            }
+            else
+                code = ERR_OPEN;
+            
+            fclose(file);
+        }
     }
+    else
+        code = ERR_OPEN;
     
     return code;
 }
@@ -102,8 +126,6 @@ int delete_from_file(char *filename)
             double average_in_file = get_average_mark_in_whole(group, count_structures);
             
             do_removal(group, &count_structures, average_in_file);
-            
-            print_group(group, count_structures);
         }
         
         fclose(file);
@@ -113,7 +135,12 @@ int delete_from_file(char *filename)
             file = fopen(filename, "w");
             
             if (file)
+            {
                 code = put_all_structs_in_file(file, group, count_structures);
+                
+                if (code == ERR_OK)
+                    print_group(group, count_structures);
+            }
             else
                 code = ERR_OPEN;
                 

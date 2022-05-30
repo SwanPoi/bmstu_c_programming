@@ -13,12 +13,9 @@ int main(int argc, char *argv[])
     
     if (argc == 3 && !strcmp(argv[1], "st"))
     {
-        src = fopen(argv[2], "r+");
+        rc = sort_in_file(argv[2]);
         
-        if (src)
-            rc = sort_in_file(src);
-        else
-            rc = ERR_OPEN;
+        opened = NOT_HERE;
     }
     else if (argc == 3 && !strcmp(argv[1], "dt"))
     {

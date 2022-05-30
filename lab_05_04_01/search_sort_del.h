@@ -3,7 +3,7 @@
 
 int search_and_write(FILE *src, FILE *dst, char *substr);
 int form_arr_startwith(student *group, int count_group, student *startswith, char *substr);
-int sort_in_file(FILE *file);
+int sort_in_file(char *filename);
 void sort_structures(student *group, int count);
 int compare_students(student *left, student *right_student);
 void swap_structures(student *left, student *right);

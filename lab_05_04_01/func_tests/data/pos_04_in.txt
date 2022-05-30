@@ -1,9 +1,9 @@
-Ivanov
-Ivan
-5 1 5 4
-Levanov
-Oleg
-2 3 4 5
 Ivanchenko
 Ilya
-3 5 4 2
+3 5 4 2 
+Ivanov
+Ivan
+5 1 5 4 
+Levanov
+Oleg
+2 3 4 5 
