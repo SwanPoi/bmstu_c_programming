@@ -1,9 +1,12 @@
-Ivanchenko
-Ilya
-3 5 4 2 
+Alvarez
+John
+4 4 4 4 
+Goddard
+Paul
+1 2 4 4 
 Ivanov
-Ivan
-5 1 5 4 
-Levanov
-Oleg
-2 3 4 5 
+Alex
+4 2 5 4 
+Parris
+Pier
+5 2 4 3 

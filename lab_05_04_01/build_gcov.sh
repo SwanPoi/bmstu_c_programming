@@ -1,3 +1,3 @@
 #!/bin/bash
-gcc -c main.c search_sort_del.c read_write_structure.c -std=c99 -Wall -Werror -Wpedantic -Wextra -Wvla -Wfloat-equal -Wfloat-conversion -g3 --coverage
-gcc search_sort_del.o read_write_structure.o main.o --coverage -o app.exe
+gcc -c operations.c delete_students.c sort_students.c search_startwith.c main.c -std=gnu99 -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion -g3 --coverage
+gcc operations.o delete_students.o sort_students.o search_startwith.o main.o --coverage -o app.exe

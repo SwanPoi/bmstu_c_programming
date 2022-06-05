@@ -1,1 +1,1 @@
-st ./data.txt 
+sb ./data.txt 

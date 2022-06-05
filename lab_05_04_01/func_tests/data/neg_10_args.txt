@@ -1,1 +1,1 @@
-dt 
+db ./data.txt
