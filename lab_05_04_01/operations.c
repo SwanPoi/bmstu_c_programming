@@ -48,7 +48,5 @@ void print_structure(student_t *student)
     printf("%s\n%s\n", student->surname, student->name);
     
     for (int i = 0; i < MARKS; i++)
-        printf("%u ", student->marks[i]);
-    
-    printf("\n");
+        printf("%u\n", student->marks[i]);
 }
