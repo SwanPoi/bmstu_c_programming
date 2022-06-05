@@ -7,8 +7,8 @@
 
 typedef struct student
 {
-    char surname[SURNAME];
-    char name[NAME];
+    char surname[SURNAME + 1];
+    char name[NAME + 1];
     uint32_t marks[MARKS];
 } student_t;
 

@@ -85,7 +85,6 @@ int delete_students_by_low_average(FILE *file, char *file_name)
 
             truncate(file_name, count_students * STUD_SIZE);
         }
-        
     }
     
     return code;
