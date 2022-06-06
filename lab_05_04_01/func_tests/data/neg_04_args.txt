@@ -1,0 +1,1 @@
+fb ../data/neg_04_in.txt ../../out.txt
