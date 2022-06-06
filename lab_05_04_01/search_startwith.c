@@ -8,7 +8,9 @@
 
 int is_startwith(char *string, char *substr)
 {
-    return strstr(string, substr) == string ? TRUE : FALSE;
+    char *cmp = strstr(string, substr);
+    
+    return (cmp == NULL) ? FALSE : (cmp - string) == 0;
 }
 
 int search_startwith(FILE *src, FILE *dst, char *substr)
@@ -33,7 +35,8 @@ int search_startwith(FILE *src, FILE *dst, char *substr)
                     count_startwith++;
             }
         
-        code = count_startwith ? code : ERR_NO_DATA;
+        if (!count_startwith)
+            code = ERR_NO_DATA;
     }
     
     return code;

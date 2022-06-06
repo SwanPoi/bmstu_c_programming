@@ -37,7 +37,6 @@ double get_average_in_file(FILE *file, int count_students, int *code)
 int delete_student(FILE *file, int position, int *count_students)
 {
     int code = ERR_OK;
-    int cur_position = ftell(file) - STUD_SIZE;
     student_t student;
     
     for (int i = position; i < (*count_students) - 1 && code == ERR_OK; i++)
@@ -53,7 +52,8 @@ int delete_student(FILE *file, int position, int *count_students)
     if (code == ERR_OK)
     {
         (*count_students)--;
-        if (fseek(file, cur_position, SEEK_SET) != 0)
+        
+        if (fseek(file, position * STUD_SIZE, SEEK_SET) != 0)
             code = ERR_FSEEK;
     }
     

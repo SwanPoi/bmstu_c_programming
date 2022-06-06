@@ -28,16 +28,13 @@ int print_from_file(FILE *file)
     if (code == ERR_OK)
     {
         student_t cur_student;
+        int count_students = size / STUD_SIZE;
         
-        if (fread(&cur_student, STUD_SIZE, 1, file) == 1)
-        {
-            print_structure(&cur_student);
-            
-            while (fread(&cur_student, STUD_SIZE, 1, file) == 1)
+        for (int i = 0; i < count_students && code == ERR_OK; i++)
+            if (fread(&cur_student, STUD_SIZE, 1, file) == 1)
                 print_structure(&cur_student);
-        }
-        else
-            code = ERR_READ;
+            else
+                code = ERR_READ;
     }
     
     return code;
