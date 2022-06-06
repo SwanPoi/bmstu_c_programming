@@ -42,7 +42,7 @@ int delete_student(FILE *file, int position, int *count_students)
     for (int i = position; i < (*count_students) - 1 && code == ERR_OK; i++)
         if (fread(&student, STUD_SIZE, 1, file) != 1)
             code = ERR_READ;
-        else if (fseek(file, -2 * STUD_SIZE, SEEK_CUR) != 0)
+        else if (fseek(file, i * STUD_SIZE, SEEK_SET) != 0)
             code = ERR_FSEEK;
         else if (fwrite(&student, STUD_SIZE, 1, file) != 1)
             code = ERR_WRITE;

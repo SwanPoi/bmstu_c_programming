@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     }
     else if (argc == 5 && !strcmp(argv[1], "fb"))
     {
-        FILE *dest = fopen(argv[3], "wb+");
+        FILE *dest = fopen(argv[3], "wb");
         src = fopen(argv[2], "rb");
         
         if (src && dest)
