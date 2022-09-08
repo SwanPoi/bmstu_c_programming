@@ -1,1 +1,1 @@
-../data/neg_out.txt
+./func_tests/data/neg_out.txt

@@ -1,1 +1,1 @@
-../data/neg_07_in.txt Ul 
+./func_tests/data/neg_07_in.txt Ul 

@@ -8,6 +8,7 @@
 #define ERR_READ_STRING 4
 #define ERR_READ_WEIGHT 5
 #define ERR_READ_VOLUME 6
+#define ERR_TOO_MUCH_DATA 7
 
 #define MAX_N 15
 #define EPS 1e-6

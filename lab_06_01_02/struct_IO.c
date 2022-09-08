@@ -10,7 +10,7 @@ int read_structure(FILE *file, thing_t *thing)
 {
     int code = ERR_OK;
     
-    if (!feof(file) && fgets(thing->name, STRING_LENGTH + 2, file) != NULL && strlen(thing->name) > 1)
+    if (!feof(file) && fgets(thing->name, sizeof(thing->name), file) != NULL && strlen(thing->name) > 1)
     {
         if (fscanf(file, "%lf", &(thing->weight)) != 1 || thing->weight < EPS)
             code = ERR_READ_WEIGHT;
@@ -35,6 +35,9 @@ int init_struct_array(FILE *file, thing_t *container, size_t *count_things)
     {
         code = read_structure(file, container + i);
         i++;
+        
+        if (i > MAX_N)
+            code = ERR_TOO_MUCH_DATA;
     }
     
     *count_things = i;

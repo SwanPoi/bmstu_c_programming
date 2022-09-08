@@ -9,9 +9,9 @@ else
 fi
 
 if [ "$USE_VALGRIND" ]; then
-  command="valgrind -q --log-file=../../valgrind_message.txt ../../app.exe $args < $1 > ../../outfile.txt"
+  command="valgrind -q --log-file=../../valgrind_message.txt ../../app.exe ../../$args < $1 > ../../outfile.txt"
 else
-  command="../../app.exe $args < $1 > ../../outfile.txt"
+  command="../../app.exe ../../$args < $1 > ../../outfile.txt"
 fi
 
 if eval "$command"; then
