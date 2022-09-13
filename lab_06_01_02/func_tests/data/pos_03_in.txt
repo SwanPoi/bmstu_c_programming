@@ -1,0 +1,12 @@
+Bus
+400
+1
+Table
+20
+2
+Staff
+5
+2
+Mouse
+3
+5
