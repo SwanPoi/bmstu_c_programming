@@ -43,7 +43,7 @@ double arithmetic_mean(const int *p_begin, const int *p_end)
     for (int *cur_p = (int *) p_begin; cur_p < (int *) p_end; cur_p++)
         sum += *cur_p;
 
-    return sum / (p_end - p_begin);
+    return (double) sum / (p_end - p_begin);
 }
 
 int count_more_than_mean_elements(const int *p_begin, const int *p_end, double mean)
