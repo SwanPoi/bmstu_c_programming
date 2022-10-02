@@ -47,7 +47,8 @@ void left_move_sort(char **left_border, char **right_border, size_t size, int (*
 
     for (char *j_ptr = *left_border; j_ptr < *right_border; j_ptr += size)
     {
-        if (comparator(j_ptr, j_ptr + size) > 0) {
+        if (comparator(j_ptr, j_ptr + size) > 0) 
+        {
             swap(j_ptr, (j_ptr + size), size);
             cur_right_border = j_ptr;
         }

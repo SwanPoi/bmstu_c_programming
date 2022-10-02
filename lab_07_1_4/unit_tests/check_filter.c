@@ -59,6 +59,33 @@ START_TEST(test_end_is_null)
 }
 END_TEST
 
+// Указатель на указатель начала нового массива - нуль
+START_TEST(test_dst_start_is_null)
+{
+    int arr[] = {2, 4, 3};
+    const int *pstart = arr;
+    int *dst_end = NULL;
+
+    int rc = key(pstart, pstart + sizeof(arr) / sizeof(int),  NULL, &dst_end);
+
+    ck_assert_int_eq(rc, ERR_NULL_POINTER);
+}
+END_TEST
+
+// Указатель на указатель конца нового массива - нуль
+START_TEST(test_dst_end_is_null)
+{
+    int arr[] = {2, 4, 3};
+    const int *pstart = arr;
+    int *dst_start = NULL;
+
+    int rc = key(pstart, pstart + sizeof(arr) / sizeof(int), &dst_start, NULL);
+
+    ck_assert_int_eq(rc, ERR_NULL_POINTER);
+    free(dst_start);
+}
+END_TEST
+
 // После фильтрации - пустой массив
 START_TEST(test_empty_array)
 {
@@ -123,6 +150,8 @@ Suite *filter_suite(void)
     tcase_add_test(tc_neg, test_start_is_null);
     tcase_add_test(tc_neg, test_end_is_null);
     tcase_add_test(tc_neg, test_empty_array);
+    tcase_add_test(tc_neg, test_dst_start_is_null);
+    tcase_add_test(tc_neg, test_dst_end_is_null);
 
     suite_add_tcase(s, tc_pos);
     suite_add_tcase(s, tc_neg);
