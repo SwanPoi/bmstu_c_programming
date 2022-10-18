@@ -87,5 +87,8 @@ int matrix_preprocessing(FILE *file, double ***matrix, int *rows, int *columns)
     if (code == ERR_OK)
         code = input_matrix(file, *matrix, *rows, *columns);
 
+    if (code == ERR_READ_MATRIX)
+        free_matrix(*matrix, *rows);
+
     return code;
 }

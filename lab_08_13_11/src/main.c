@@ -41,41 +41,36 @@ int main(int argc, char *argv[])
 
                 // Обработка второй матрицы
                 if (rc == ERR_OK)
+                {
                     rc = matrix_preprocessing(second_file, &second_matrix, &second_rows, &second_columns);
-                else
-                {
-                    first_rows = 0;
-                    first_columns = 0;
-                }
-
-                // Сложение или умножение матриц
-                if (rc == ERR_OK)
-                {
-                    if (!strcmp(argv[1], "a"))
+                    // Сложение или умножение матриц
+                    if (rc == ERR_OK)
                     {
-                        res_matrix = matr_addition(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
-
-                        if (rc == ERR_OK)
+                        if (!strcmp(argv[1], "a"))
                         {
-                            res_rows = first_rows;
-                            res_columns = first_columns;
-                        }
-                    }
-                    else if (!strcmp(argv[1], "m"))
-                    {
-                        res_matrix = matr_multiplication(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
+                            res_matrix = matr_addition(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
 
-                        if (rc == ERR_OK)
-                        {
-                            res_rows = first_rows;
-                            res_columns = second_columns;
+                            if (rc == ERR_OK)
+                            {
+                                res_rows = first_rows;
+                                res_columns = first_columns;
+                            }
                         }
+                        else if (!strcmp(argv[1], "m"))
+                        {
+                            res_matrix = matr_multiplication(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
+
+                            if (rc == ERR_OK)
+                            {
+                                res_rows = first_rows;
+                                res_columns = second_columns;
+                            }
+                        }
+
+                        free_matrix(second_matrix, second_rows);
                     }
-                }
-                else
-                {
-                    second_rows = 0;
-                    second_columns = 0;
+
+                    free_matrix(first_matrix, first_rows);
                 }
 
                 // Вывод результата в файл
@@ -94,11 +89,6 @@ int main(int argc, char *argv[])
             fclose(first_file);
         }
 
-
-        // Освобождение памяти из-под матриц
-
-        free_matrix(first_matrix, first_rows);
-        free_matrix(second_matrix, second_rows);
         free_matrix(res_matrix, res_rows);
     }
     else if (argc == 4 && !strcmp(argv[1], "o"))
