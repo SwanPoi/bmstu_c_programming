@@ -74,6 +74,11 @@ int det_process(char *src_name, char *dst_name)
                 if (rc == ERR_OK)
                     rc = det_print(dst_name, det);
             }
+            else
+            {
+                rows = 0;
+                columns = 0;
+            }
 
             free_matrix(matrix, rows);
         }
