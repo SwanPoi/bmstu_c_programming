@@ -1,15 +1,15 @@
 CC := gcc
 
-CFLAGS := -std=c99 -Wall -Werror -Wpedantic -Wextra
+CFLAGS := -std=c99 -Wall -Werror -Wpedantic -Wextra -Wfloat-equal -Wfloat-conversion
 LDFLAGS := -lm
 CHECK_FLAGS := $(shell pkg-config --cflags --libs check)
 
 
-SRCS := ./src/matrix_IO.c ./src/matrix_operations.c
-OBJS := ./out/matrix_IO.o ./out/matrix_operations.o
+SRCS := ./src/matrix_IO.c ./src/matrix_operations.c ./src/main_process.c
+OBJS := ./out/matrix_IO.o ./out/matrix_operations.o ./out/main_process.o
 
-#CHECK_SRCS := ./unit_tests/check_main.c ./unit_tests/check_sort.c ./unit_tests/check_filter.c
-#CHECK_OBJS := ./out/check_main.o ./out/check_sort.o ./out/check_filter.o
+CHECK_SRCS := ./unit_tests/check_main.c ./unit_tests/check_matr_multiplication.c ./unit_tests/check_matr_addition.c ./unit_tests/check_matrix_determinant.c
+CHECK_OBJS := ./out/check_main.o ./out/check_matr_multiplication.o ./out/check_matr_addition.o ./out/check_matrix_determinant.o
 
 ifeq ($(mode), debug)
 	CFLAGS += -g3

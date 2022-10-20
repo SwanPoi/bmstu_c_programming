@@ -1,156 +1,15 @@
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include "../inc/constants.h"
-#include "../inc/matrix_IO.h"
-#include "../inc/matrix_operations.h"
+#include "../inc/main_process.h"
 
 int main(int argc, char *argv[])
 {
     int rc = ERR_OK;
 
     if (argc == 5 && (!strcmp(argv[1], "a") || !strcmp(argv[1], "m")))
-    {
-        FILE *first_file = fopen(argv[2], "r");
-
-        double **first_matrix = NULL;
-        double **second_matrix = NULL;
-        double **res_matrix = NULL;
-        int first_rows = 0, second_rows = 0, first_columns = 0, second_columns = 0, res_rows = 0, res_columns = 0;
-
-        if (!first_file)
-            rc = ERR_OPEN_FIRST_FILE;
-
-        // Открытие второго файла
-        if (rc == ERR_OK)
-        {
-            FILE *second_file = fopen(argv[3], "r");
-
-            if (!second_file)
-                rc = ERR_OPEN_SECOND_FILE;
-            else
-            {
-                FILE *res_file = fopen(argv[4], "w");
-
-                if (!res_file)
-                    rc = ERR_OPEN_RES_FILE;
-
-                // Обработка первой матрицы
-                if (rc == ERR_OK)
-                    rc = matrix_preprocessing(first_file, &first_matrix, &first_rows, &first_columns);
-
-                // Обработка второй матрицы
-                if (rc == ERR_OK)
-                {
-                    rc = matrix_preprocessing(second_file, &second_matrix, &second_rows, &second_columns);
-                    // Сложение или умножение матриц
-                    if (rc == ERR_OK)
-                    {
-                        if (!strcmp(argv[1], "a"))
-                        {
-                            res_matrix = matr_addition(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
-
-                            if (rc == ERR_OK)
-                            {
-                                res_rows = first_rows;
-                                res_columns = first_columns;
-                            }
-                        }
-                        else if (!strcmp(argv[1], "m"))
-                        {
-                            res_matrix = matr_multiplication(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
-
-                            if (rc == ERR_OK)
-                            {
-                                res_rows = first_rows;
-                                res_columns = second_columns;
-                            }
-                        }
-
-                        free_matrix(second_matrix, second_rows);
-                    }
-
-                    free_matrix(first_matrix, first_rows);
-                }
-
-                // Вывод результата в файл
-                if (rc == ERR_OK)
-                {
-                    fprintf(res_file, "%d %d\n", res_rows, res_columns);
-                    output_matrix(res_file, res_matrix, res_rows, res_columns);
-                }
-
-                if (rc != ERR_OPEN_RES_FILE)
-                    fclose(res_file);
-
-                fclose(second_file);
-            }
-
-            fclose(first_file);
-        }
-
-        free_matrix(res_matrix, res_rows);
-    }
+        rc = add_mult_process(argv[2], argv[3], argv[4], argv[1]);
     else if (argc == 4 && !strcmp(argv[1], "o"))
-    {
-        FILE *src = fopen(argv[2], "r");
-
-        if (!src)
-            rc = ERR_OPEN_FIRST_FILE;
-        else
-        {
-            int rows = 0, columns = 0;
-
-            rc = input_size(src, &rows, &columns);
-
-            if (rows != columns)
-                rc = ERR_NOT_SQUARE_MATRIX;
-
-            if (rc == ERR_OK)
-            {
-                double **matrix = allocate_matrix(rows, columns, &rc);
-                int *draft_array = calloc(rows, sizeof(int));
-                int draft_size = 0, start_column = 0;
-
-                if (!draft_array)
-                    rc = ERR_DRAFT_ALLOC;
-
-                if (rc == ERR_OK)
-                {
-                    rc = input_matrix(src, matrix, rows, columns);
-
-                    if (rc == ERR_OK)
-                    {
-                        double det = matrix_determinant(matrix, rows, columns, draft_array, &draft_size, start_column);
-
-                        if (rc == ERR_OK)
-                        {
-                            FILE *dst = fopen(argv[3], "w");
-
-                            if (!dst)
-                                rc = ERR_OPEN_RES_FILE;
-                            else
-                            {
-                                fprintf(dst, "%lf\n", det);
-                                fclose(dst);
-                            }
-                        }
-                    }
-
-                    free(draft_array);
-                }
-                else
-                {
-                    rows = 0;
-                    columns = 0;
-                }
-
-                free_matrix(matrix, rows);
-            }
-
-            fclose(src);
-        }
-    }
+        rc = det_process(argv[2], argv[3]);
     else
         rc = ERR_ARGS;
 
