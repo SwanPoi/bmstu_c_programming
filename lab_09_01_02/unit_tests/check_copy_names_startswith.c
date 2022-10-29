@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "check_copy_names_startswith.h"
 #include "../inc/process.h"
 #include "../inc/struct.h"
@@ -18,6 +19,8 @@ START_TEST(test_all_startswith)
         ck_assert_str_eq(res[i].name, dst[i].name);
         ck_assert_double_eq(res[i].weight, dst[i].weight);
         ck_assert_double_eq(res[i].volume, dst[i].volume);
+
+        free(dst[i].name);
     }
 }
 END_TEST
@@ -38,6 +41,8 @@ START_TEST(test_some_startswith)
         ck_assert_str_eq(res[i].name, dst[i].name);
         ck_assert_double_eq(res[i].weight, dst[i].weight);
         ck_assert_double_eq(res[i].volume, dst[i].volume);
+
+        free(dst[i].name);
     }
 }
 END_TEST
