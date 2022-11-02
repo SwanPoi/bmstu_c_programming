@@ -27,26 +27,27 @@ int main(int argc, char *argv[])
 
                 rc = init_struct_array(file, &container, &count_things);
 
+                fclose(file);
+
                 if (rc == ERR_OK)
                 {
                     if (argc == 2)
                     {
-                        sort_container(container, count_things);
-                        print_all(container, count_things);
+                        rc = sort_container(container, count_things);
+                        
+                        if (rc == ERR_OK)
+                            rc = print_all(container, count_things);
                     }
                     else if (argc == 3 && !strcmp(argv[2], DEFAULT_PREFIX))
-                        print_all(container, count_things);
+                        rc = print_all(container, count_things);
                     else
                         rc = prefix_process(container, count_things, argv[2]);
                 }
 
-                if (rc == ERR_OK || rc == ERR_ALLOC_PREFIX || rc == ERR_NO_DATA)
-                    free_container(container, count_things);
+                free_container(container, count_things);
             }
             else
                 rc = ERR_ALLOC;
-
-            fclose(file);
         }
         else
             rc = ERR_OPEN;

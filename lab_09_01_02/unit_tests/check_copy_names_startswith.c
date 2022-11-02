@@ -2,6 +2,7 @@
 #include "check_copy_names_startswith.h"
 #include "../inc/process.h"
 #include "../inc/struct.h"
+#include "../inc/constants.h"
 
 // Все элементы массива подходят по началу названия
 START_TEST(test_all_startswith)
@@ -10,9 +11,11 @@ START_TEST(test_all_startswith)
     thing_t res[3] = {{"Poi", 20, 40}, {"Pony", 10, 30}, {"Pod", 12, 12}};
     thing_t dst[3];
 
-    size_t count = copy_names_startswith(src, dst, 3, "Po");
+    size_t count = 0;
+    int rc = copy_names_startswith(src, dst, 3, &count, "Po");
 
     ck_assert_int_eq(count, 3);
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 3; i++)
     {
@@ -32,9 +35,11 @@ START_TEST(test_some_startswith)
     thing_t res[2] = {{"Poi", 20, 40}, {"Pod", 12, 12}};
     thing_t dst[2];
 
-    size_t count = copy_names_startswith(src, dst, 3, "Po");
+    size_t count = 0;
+    int rc = copy_names_startswith(src, dst, 3, &count, "Po");
 
     ck_assert_int_eq(count, 2);
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 2; i++)
     {
@@ -53,9 +58,11 @@ START_TEST(test_all_not_startswith)
     thing_t src[3] = {{"Poi", 20, 40}, {"Pony", 10, 30}, {"Pod", 12, 12}};
     thing_t dst[3];
 
-    size_t count = copy_names_startswith(src, dst, 3, "Dre");
+    size_t count = 0;
+    int rc = copy_names_startswith(src, dst, 3, &count, "Dre");
 
     ck_assert_int_eq(count, 0);
+    ck_assert_int_eq(rc, ERR_OK);
 }
 END_TEST
 

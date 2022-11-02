@@ -6,8 +6,8 @@
 
 int read_structure(FILE *file, thing_t *thing);
 int check_correct_string(char *string, int size);
-void print_structure(thing_t *thing);
-void print_all(thing_t *container, size_t count_things);
+int print_structure(thing_t *thing);
+int print_all(thing_t *container, size_t count_things);
 int init_struct_array(FILE *file, thing_t **container, size_t *count_things);
 int count_of_structures_in_file(FILE *file, int *code);
 

@@ -11,6 +11,7 @@
 #define ERR_REALLOC 7
 #define ERR_ALLOC 8
 #define ERR_ALLOC_PREFIX 9
+#define ERR_NULL 10
 
 #define MAX_N 15
 #define EPS 1e-6

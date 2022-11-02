@@ -1,6 +1,7 @@
 #include "check_sort_container.h"
 #include "../inc/process.h"
 #include "../inc/struct.h"
+#include "../inc/constants.h"
 
 // Неотсортированный массив
 START_TEST(test_not_sorted)
@@ -8,7 +9,9 @@ START_TEST(test_not_sorted)
     thing_t src[3] = {{"Poi", 20, 40}, {"Pony", 10, 30}, {"Pod", 12, 12}};
     thing_t res[3] = {{"Pony", 10, 30}, {"Poi", 20, 40}, {"Pod", 12, 12}};
 
-    sort_container(src, 3);
+    int rc = sort_container(src, 3);
+
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 3; i++)
     {
@@ -25,7 +28,9 @@ START_TEST(test_with_repeat)
     thing_t src[3] = {{"Poi", 20, 40}, {"Pod", 12, 12},{"Pony", 10, 20}};
     thing_t res[3] = {{"Poi", 20, 40}, {"Pony", 10, 20}, {"Pod", 12, 12}};
 
-    sort_container(src, 3);
+    int rc = sort_container(src, 3);
+
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 3; i++)
     {
@@ -42,7 +47,9 @@ START_TEST(test_sorted)
     thing_t src[3] = {{"Poi", 1, 40}, {"Pony", 10, 20}, {"Pod", 12, 12}};
     thing_t res[3] = {{"Poi", 1, 40}, {"Pony", 10, 20}, {"Pod", 12, 12}};
 
-    sort_container(src, 3);
+    int rc = sort_container(src, 3);
+
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 3; i++)
     {
@@ -59,7 +66,9 @@ START_TEST(test_reverse_sorted)
     thing_t src[3] = {{"Pod", 12, 12}, {"Pony", 10, 20}, {"Poi", 1, 40}};
     thing_t res[3] = {{"Poi", 1, 40}, {"Pony", 10, 20}, {"Pod", 12, 12}};
 
-    sort_container(src, 3);
+    int rc = sort_container(src, 3);
+
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 3; i++)
     {
@@ -76,7 +85,8 @@ START_TEST(test_one_element)
     thing_t src[1] = {{"Pod", 12, 12}};
     thing_t res[1] = {{"Pod", 12, 12}};
 
-    sort_container(src, 1);
+    int rc = sort_container(src, 1);
+    ck_assert_int_eq(rc, ERR_OK);
 
     for (int i = 0; i < 1; i++)
     {
