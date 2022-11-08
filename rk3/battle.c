@@ -4,30 +4,39 @@
 void battle(int **matrix, int rows, int columns)
 {
 	int cur_row = 0, cur_column = 0;
+    int flag = 0;
 	
 	get_coordinates(&cur_row, &cur_column);
 	
-	while (cur_column != 'q' - 'a' && cur_row >= 0)
+	while (!(cur_column == 'q' - 'a' && cur_row == -1) && !flag)
 	{
+		if (cur_row >= rows || cur_row < 0 || cur_column  < 0 || cur_column >= columns)
+			printf("0\n");
+		else
+        {
+            if (matrix[cur_row][cur_column] <= 0)
+                printf("1\n");
+            else if (matrix[cur_row][cur_column] > 0)
+            {
+                if (is_killed(matrix, rows, columns, cur_row, cur_column) == 0)
+                    printf("3 %d\n", matrix[cur_row][cur_column]);
+                else
+                    printf("2 %d\n", matrix[cur_row][cur_column]);
+                matrix[cur_row][cur_column] *= -1;
+            }
+		}
+		
 		if (is_clean(matrix, rows, columns) == 0)
 		{
 			printf("Victory\n");
-			break;
+			flag = 1;
 		}	
-		else if (cur_row >= rows || cur_row < 0 || cur_column  < 0 || cur_column >= columns)
-			printf("0\n");
-		else if (matrix[cur_row][cur_column] <= 0)
-			printf("1\n");
-		else if (matrix[cur_row][cur_column] > 0)
-		{
-			if (is_killed(matrix, rows, columns, cur_row, cur_column) == 0)
-				printf("3 %d\n", matrix[cur_row][cur_column]);
-			else
-				printf("2 %d\n", matrix[cur_row][cur_column]);
-			matrix[cur_row][cur_column] *= -1;
-		}
-		
-		get_coordinates(&cur_row, &cur_column);
+        
+        if (flag == 0)
+        {
+            scanf("\n");
+            get_coordinates(&cur_row, &cur_column);
+        }
 	}
 }
 
