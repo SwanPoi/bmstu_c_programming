@@ -74,7 +74,7 @@ double matrix_determinant(matrix_t *matrix, array_t *rows_array, int start_colum
             }
 
         det += matrix->data[first_row][start_column] * matrix->data[second_row][start_column + 1]
-                - matrix->data[second_row][start_column] * matrix->data[first_row][start_column + 1];
+            - matrix->data[second_row][start_column] * matrix->data[first_row][start_column + 1];
     }
     else if (*code == ERR_OK)
     {
