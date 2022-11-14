@@ -12,27 +12,35 @@ START_TEST(determinant_four_elements_matrix)
     double expected_res = -10;
     double src[2][2] = {{1, 4}, {5, 10}};
 
-    double **matrix = allocate_matrix(2, 2, &rc);
-    int *draft_array = calloc(2, sizeof(int));
+    matrix_t matrix;
+    matrix.data = NULL;
+    matrix.rows = 2;
+    matrix.columns = 2;
 
-    ck_assert_ptr_nonnull(matrix);
-    ck_assert_ptr_nonnull(draft_array);
+    rc = allocate_matrix(&matrix);
+
+    ck_assert_ptr_nonnull(matrix.data);
     ck_assert_int_eq(rc, ERR_OK);
 
-    draft_array[0] = 2;
-    draft_array[1] = 3;
+    array_t draft_array;
+    array_init(&draft_array);
+
+    draft_array.data = calloc(2, sizeof(int));
+
+    ck_assert_ptr_nonnull(draft_array.data);
+
+    draft_array.data[0] = 2;
+    draft_array.data[1] = 3;
 
     for (int i = 0; i < 2; i++)
-        memcpy(matrix[i], src[i], sizeof(double) * 2);
+        memcpy(matrix.data[i], src[i], sizeof(double) * 2);
 
-    int size = 0;
-
-    double res = matrix_determinant(matrix, 2, 2, draft_array, &size, 0);
+    double res = matrix_determinant(&matrix, &draft_array, 0, &rc);
 
     ck_assert_double_eq(res, expected_res);
 
-    free_matrix(matrix, 2);
-    free(draft_array);
+    free_matrix(&matrix);
+    free(draft_array.data);
 }
 END_TEST
 
@@ -42,23 +50,31 @@ START_TEST(determinant_one_element_matrix)
     int rc = ERR_OK;
     double expected_res= 3;
 
-    double **matrix = allocate_matrix(1, 1, &rc);
-    int *draft_array = calloc(1, sizeof(int));
+    matrix_t matrix;
+    matrix.data = NULL;
+    matrix.rows = 1;
+    matrix.columns = 1;
 
-    ck_assert_ptr_nonnull(matrix);
-    ck_assert_ptr_nonnull(draft_array);
+    rc = allocate_matrix(&matrix);
+
+    ck_assert_ptr_nonnull(matrix.data);
     ck_assert_int_eq(rc, ERR_OK);
 
-    matrix[0][0] = 3;
+    array_t draft_array;
+    array_init(&draft_array);
 
-    int size = 0;
+    draft_array.data = calloc(1, sizeof(int));
 
-    double res = matrix_determinant(matrix, 1, 1, draft_array, &size, 0);
+    ck_assert_ptr_nonnull(draft_array.data);
+
+    matrix.data[0][0] = 3;
+
+    double res = matrix_determinant(&matrix, &draft_array, 0, &rc);
 
     ck_assert_double_eq(res, expected_res);
 
-    free_matrix(matrix, 1);
-    free(draft_array);
+    free_matrix(&matrix);
+    free(draft_array.data);
 }
 END_TEST
 
@@ -69,28 +85,36 @@ START_TEST(determinant_nine_elements_matrix)
     double expected_res = 2;
     double src[3][3] = {{1, 4, 5}, {5, 10, 2}, {3, 6, 1}};
 
-    double **matrix = allocate_matrix(3, 3, &rc);
-    int *draft_array = calloc(3, sizeof(int));
+    matrix_t matrix;
+    matrix.data = NULL;
+    matrix.rows = 3;
+    matrix.columns = 3;
 
-    ck_assert_ptr_nonnull(matrix);
-    ck_assert_ptr_nonnull(draft_array);
+    rc = allocate_matrix(&matrix);
+
+    ck_assert_ptr_nonnull(matrix.data);
     ck_assert_int_eq(rc, ERR_OK);
 
-    draft_array[0] = 3;
-    draft_array[1] = 4;
-    draft_array[2] = 5;
+    array_t draft_array;
+    array_init(&draft_array);
+
+    draft_array.data = calloc(3, sizeof(int));
+
+    ck_assert_ptr_nonnull(draft_array.data);
+
+    draft_array.data[0] = 3;
+    draft_array.data[1] = 4;
+    draft_array.data[2] = 5;
 
     for (int i = 0; i < 3; i++)
-        memcpy(matrix[i], src[i], sizeof(double) * 3);
+        memcpy(matrix.data[i], src[i], sizeof(double) * 3);
 
-    int size = 0;
-
-    double res = matrix_determinant(matrix, 3, 3, draft_array, &size, 0);
+    double res = matrix_determinant(&matrix, &draft_array, 0, &rc);
 
     ck_assert_double_eq(res, expected_res);
 
-    free_matrix(matrix, 3);
-    free(draft_array);
+    free_matrix(&matrix);
+    free(draft_array.data);
 }
 END_TEST
 

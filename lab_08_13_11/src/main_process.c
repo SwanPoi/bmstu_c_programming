@@ -4,6 +4,7 @@
 #include "../inc/constants.h"
 #include "../inc/matrix_IO.h"
 #include "../inc/matrix_operations.h"
+#include "../inc/main_process.h"
 
 int det_process(char *src_name, char *dst_name)
 {
@@ -14,55 +15,50 @@ int det_process(char *src_name, char *dst_name)
         rc = ERR_OPEN_FIRST_FILE;
     else
     {
-        int rows = 0, columns = 0;
+        matrix_t matrix;
 
-        rc = input_size(src, &rows, &columns);
+        matrix_init(&matrix);
 
-        if (rows != columns)
+        rc = input_size(src, &matrix.rows, &matrix.columns);
+
+        if (matrix.rows != matrix.columns)
             rc = ERR_NOT_SQUARE_MATRIX;
 
         if (rc == ERR_OK)
         {
-            double **matrix = allocate_matrix(rows, columns, &rc);
-            int *draft_array = calloc(rows, sizeof(int));
-            int draft_size = 0, start_column = 0;
+            rc = allocate_matrix(&matrix);
 
-            if (!draft_array)
+            array_t rows_array;
+            array_init(&rows_array);
+
+            rows_array.data = calloc(matrix.rows, sizeof(int));
+            int start_column = 0;
+
+            if (!rows_array.data)
                 rc = ERR_DRAFT_ALLOC;
 
             if (rc == ERR_OK)
             {
-                rc = input_matrix(src, matrix, rows, columns);
+                rc = input_matrix(src, &matrix);
+                fclose(src);
 
                 if (rc == ERR_OK)
                 {
-                    double det = matrix_determinant(matrix, rows, columns, draft_array, &draft_size, start_column);
+                    double det = matrix_determinant(&matrix, &rows_array, start_column, &rc);
 
                     if (rc == ERR_OK)
-                    {
-                        FILE *dst = fopen(dst_name, "w");
-
-                        if (!dst)
-                            rc = ERR_OPEN_RES_FILE;
-                        else
-                        {
-                            fprintf(dst, "%lf\n", det);
-                            fclose(dst);
-                        }
-                    }
+                        rc = print_det(dst_name, det);
                 }
-                free(draft_array);
+                free(rows_array.data);
             }
             else
             {
-                rows = 0;
-                columns = 0;
+                matrix.rows = 0;
+                matrix.columns = 0;
             }
 
-            free_matrix(matrix, rows);
+            free_matrix(&matrix);
         }
-
-        fclose(src);
     }
 
     return rc;
@@ -72,10 +68,6 @@ int add_mult_process(char *first_name, char *second_name, char *res_name, char *
 {
     int rc = ERR_OK;
     FILE *first_file = fopen(first_name, "r");
-    double **first_matrix = NULL;
-    double **second_matrix = NULL;
-    double **res_matrix = NULL;
-    int first_rows = 0, second_rows = 0, first_columns = 0, second_columns = 0, res_rows = 0, res_columns = 0;
 
     if (!first_file)
         rc = ERR_OPEN_FIRST_FILE;
@@ -89,65 +81,60 @@ int add_mult_process(char *first_name, char *second_name, char *res_name, char *
             rc = ERR_OPEN_SECOND_FILE;
         else
         {
-            FILE *res_file = fopen(res_name, "w");
+            matrix_t first_matrix, second_matrix, res_matrix;
 
-            if (!res_file)
-                rc = ERR_OPEN_RES_FILE;
+            matrix_init(&first_matrix);
+            matrix_init(&second_matrix);
+            matrix_init(&res_matrix);
 
             // Обработка первой матрицы
-            if (rc == ERR_OK)
-                rc = matrix_preprocessing(first_file, &first_matrix, &first_rows, &first_columns);
+            rc = matrix_preprocessing(first_file, &first_matrix);
+            fclose(first_file);
 
             // Обработка второй матрицы
             if (rc == ERR_OK)
             {
-                rc = matrix_preprocessing(second_file, &second_matrix, &second_rows, &second_columns);
+                rc = matrix_preprocessing(second_file, &second_matrix);
+                fclose(second_file);
 
                 // Сложение или умножение матриц
                 if (rc == ERR_OK)
                 {
                     if (!strcmp(mode, "a"))
-                    {
-                        res_matrix = matr_addition(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
-
-                        if (rc == ERR_OK)
-                        {
-                            res_rows = first_rows;
-                            res_columns = first_columns;
-                        }
-                    }
+                        rc = matr_addition(&res_matrix, &first_matrix, &second_matrix);
                     else if (!strcmp(mode, "m"))
-                    {
-                        res_matrix = matr_multiplication(first_matrix, second_matrix, first_rows, first_columns, second_rows, second_columns, &rc);
+                        rc = matr_multiplication(&res_matrix, &first_matrix, &second_matrix);
 
-                        if (rc == ERR_OK)
-                        {
-                            res_rows = first_rows;
-                            res_columns = second_columns;
-                        }
-                    }
-
-                    free_matrix(second_matrix, second_rows);
+                    free_matrix(&second_matrix);
                 }
-                free_matrix(first_matrix, first_rows);
+                free_matrix(&first_matrix);
             }
 
             // Вывод результата в файл
             if (rc == ERR_OK)
-            {
-                fprintf(res_file, "%d %d\n", res_rows, res_columns);
-                output_matrix(res_file, res_matrix, res_rows, res_columns);
-            }
+                rc = write_matrix_to_file(res_name, &res_matrix);
 
-            if (rc != ERR_OPEN_RES_FILE)
-                fclose(res_file);
-            fclose(second_file);
+            free_matrix(&res_matrix);
         }
-
-        fclose(first_file);
     }
 
-    free_matrix(res_matrix, res_rows);
+
+    return rc;
+}
+
+int print_det(char *dst_name, double det)
+{
+    int rc = ERR_OK;
+
+    FILE *dst = fopen(dst_name, "w");
+
+    if (!dst)
+        rc = ERR_OPEN_RES_FILE;
+    else
+    {
+        fprintf(dst, "%lf\n", det);
+        fclose(dst);
+    }
 
     return rc;
 }

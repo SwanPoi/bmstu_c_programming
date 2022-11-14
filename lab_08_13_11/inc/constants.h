@@ -15,6 +15,7 @@
 #define ERR_OPEN_RES_FILE 11
 #define ERR_NOT_SQUARE_MATRIX 12
 #define ERR_DRAFT_ALLOC 13
+#define ERR_NULL 14
 
 #define TRUE 1
 #define FALSE 0

@@ -2,38 +2,46 @@
 #include <stdlib.h>
 #include "../inc/matrix_IO.h"
 #include "../inc/constants.h"
+#include "../inc/struct.h"
 
 // Освобождение памяти из-под матрицы
-void free_matrix(double **matr, int rows)
+void free_matrix(matrix_t *matrix)
 {
-    for (int i = 0; i < rows; i++)
-        free(matr[i]);
+    for (int i = 0; i < matrix->rows; i++)
+        free(matrix->data[i]);
 
-    free(matr);
+    free(matrix->data);
 }
 
 // Выделение памяти под матрицу
-double **allocate_matrix(int rows, int columns, int *code)
+int allocate_matrix(matrix_t *matrix)
 {
-    double **matr = calloc(rows, sizeof(double *));
+    int code = ERR_OK;
 
-    if (!matr)
-        *code = ERR_ALLOCATE_MATRIX;
-    else
+    if (matrix != NULL)
     {
-        for (int i = 0; i < rows; i++)
-        {
-            matr[i] = calloc(columns, sizeof(double));
+        matrix->data = calloc(matrix->rows, sizeof(double *));
 
-            if (!matr[i])
+        if (!matrix->data)
+            code = ERR_ALLOCATE_MATRIX;
+        else
+        {
+            for (int i = 0; i < matrix->rows; i++)
             {
-                free_matrix(matr, rows);
-                *code = ERR_ALLOCATE_ROW;
+                matrix->data[i] = calloc(matrix->columns, sizeof(double));
+
+                if (!matrix->data[i])
+                {
+                    free_matrix(matrix);
+                    code = ERR_ALLOCATE_ROW;
+                }
             }
         }
     }
+    else
+        code = ERR_NULL;
 
-    return matr;
+    return code;
 }
 
 // Ввод размеров матрицы из файла
@@ -41,57 +49,104 @@ int input_size(FILE *file, int *rows, int *columns)
 {
     int code = ERR_OK;
 
-    if (fscanf(file, "%d%d", rows, columns) != 2)
-        code = ERR_READ_SIZE;
-    else if (*rows <= 0 || *columns <= 0)
-        code = ERR_WRONG_SIZE;
+    if (file != NULL && rows != NULL && columns != NULL)
+    {
+        if (fscanf(file, "%d%d", rows, columns) != 2)
+            code = ERR_READ_SIZE;
+        else if (*rows <= 0 || *columns <= 0)
+            code = ERR_WRONG_SIZE;
+    }
+    else
+        code = ERR_NULL;
 
     return code;
 }
 
 // Ввод матрицы из файла
-int input_matrix(FILE *file, double **matr, int rows, int columns)
+int input_matrix(FILE *file, matrix_t *matrix)
 {
     int code = ERR_OK;
 
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < columns; j++)
-            if (fscanf(file, "%lf", matr[i] + j) != 1)
-                code = ERR_READ_MATRIX;
+    if (file != NULL && matrix != NULL)
+    {
+        for (int i = 0; i < matrix->rows; i++)
+            for (int j = 0; j < matrix->columns; j++)
+                if (fscanf(file, "%lf", matrix->data[i] + j) != 1)
+                    code = ERR_READ_MATRIX;
+    }
+    else
+        code = ERR_NULL;
 
     return code;
 }
 
 // Вывод матрицы в файл
-void output_matrix(FILE *file, double **matr, int rows, int columns)
+void output_matrix(FILE *file, matrix_t *matrix)
 {
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-            fprintf(file, "%lf ", matr[i][j]);
+    if (file != NULL && matrix != NULL)
+        for (int i = 0; i < matrix->rows; i++)
+        {
+            for (int j = 0; j < matrix->columns; j++)
+                fprintf(file, "%lf ", matrix->data[i][j]);
 
-        fprintf(file, "\n");
-    }
+            fprintf(file, "\n");
+        }
 }
 
 // Предобработка матрицы
-int matrix_preprocessing(FILE *file, double ***matrix, int *rows, int *columns)
+int matrix_preprocessing(FILE *file, matrix_t *matrix)
 {
     int code = ERR_OK;
 
-    code = input_size(file, rows, columns);
-
-    if (code == ERR_OK)
-        *matrix = allocate_matrix(*rows, *columns, &code);
-
-    if (code == ERR_OK)
-        code = input_matrix(file, *matrix, *rows, *columns);
-
-    if (code == ERR_READ_MATRIX)
+    if (file != NULL && matrix != NULL)
     {
-        free_matrix(*matrix, *rows);
-        *rows = 0;
+        code = input_size(file, &matrix->rows, &matrix->columns);
+
+        if (code == ERR_OK)
+            code = allocate_matrix(matrix);
+
+        if (code == ERR_OK)
+            code = input_matrix(file, matrix);
+
+        if (code == ERR_READ_MATRIX)
+        {
+            free_matrix(matrix);
+            matrix->rows = 0;
+        }
     }
+    else
+        code = ERR_NULL;
 
     return code;
+}
+
+// Инициализация матрицы
+void matrix_init(matrix_t *matrix)
+{
+    matrix->data = NULL;
+    matrix->rows = 0;
+    matrix->columns = 0;
+}
+
+int write_matrix_to_file(char *res_name, matrix_t *matrix)
+{
+    int rc = ERR_OK;
+
+    if (res_name != NULL && matrix != NULL)
+    {
+        FILE *res_file = fopen(res_name, "w");
+
+        if (!res_file)
+            rc = ERR_OPEN_RES_FILE;
+        else
+        {
+            fprintf(res_file, "%d %d\n", matrix->rows, matrix->columns);
+            output_matrix(res_file, matrix);
+            fclose(res_file);
+        }
+    }
+    else
+        rc = ERR_NULL;
+
+    return rc;
 }
