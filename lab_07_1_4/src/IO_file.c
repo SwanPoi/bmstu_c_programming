@@ -33,3 +33,19 @@ void write_arr_to_file(FILE *file, int *p_start, int *p_end)
     for (int *p_cur = p_start; p_cur < p_end; p_cur++)
         fprintf(file, "%d ", *p_cur);
 }
+
+int write_with_validate(char *filename, int *p_start, int *p_end)
+{
+    int rc = ERR_OK;
+    FILE* dest = fopen(filename, "w");
+
+    if (dest)
+    {
+        write_arr_to_file(dest, p_start, p_end);
+        fclose(dest);
+    }
+    else
+        rc = ERR_OPEN_DEST;
+
+    return rc;
+}

@@ -5,8 +5,8 @@ LDFLAGS := -lm
 CHECK_FLAGS := $(shell pkg-config --cflags --libs check)
 
 
-SRCS := ./src/sort.c ./src/filter.c ./src/IO_file.c
-OBJS := ./out/sort.o ./out/filter.o ./out/IO_file.o
+SRCS := ./src/sort.c ./src/filter.c ./src/IO_file.c ./src/task_processes.c
+OBJS := ./out/sort.o ./out/filter.o ./out/IO_file.o ./out/task_processes.o
 
 CHECK_SRCS := ./unit_tests/check_main.c ./unit_tests/check_sort.c ./unit_tests/check_filter.c
 CHECK_OBJS := ./out/check_main.o ./out/check_sort.o ./out/check_filter.o
@@ -34,20 +34,6 @@ unit_tests.exe: $(CHECK_OBJS) $(OBJS)
 
 ./out/%.o : ./unit_tests/%.c
 	$(CC) $(CFLAGS) $(CHECK_FLAGS) $< -c -o $@
-
-
-## Генерация файлов зависимостей
-#out/%.d : inc/%.h src/%.c
-#	echo -n "out/" > $@
-#	$(CC) -MM $< >> $@
-
-#out/%.d : inc/%.h unit_tests/%.c
-#	echo -n "out/" > $@
-#	$(CC) -MM $< >> $@
-#
-#C_DEPS = $(SRCS:./src/%.c=./out/%.d)
-#
-#include $(wildcard $(C_DEPS))
 
 .PHONY : clean func unit
 
