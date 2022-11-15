@@ -1,0 +1,12 @@
+Poi
+2
+3
+Staff
+7
+6
+Poster
+1
+4
+Log
+3
+2
