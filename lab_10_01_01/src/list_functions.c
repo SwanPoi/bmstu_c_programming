@@ -130,7 +130,7 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
 		if (comparator(a_node->data, b_node->data) <= 0)
 		{
 			new_head = a_node;
-			a_node = a_node ->next;
+			a_node = a_node->next;
 		}
 		else
 		{

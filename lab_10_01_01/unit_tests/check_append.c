@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "check_append.h"
 #include "../inc/list_functions.h"
 #include "../inc/struct.h"
-//#include "../inc/constants.h"
+#include "../inc/struct_IO.h"
 
 // Позитив: в функцию передаются указатели на NULL
 START_TEST(test_both_ptr_null)
@@ -22,7 +23,7 @@ END_TEST
 START_TEST(test_second_ptr_null)
 {
     film_t *film = malloc(sizeof(film_t));
-    film->name = "Terminator";
+    film->name = strdup("Terminator");
     film->ticket_price = 1000;
 
     node_t *head_a = malloc(sizeof(node_t));
@@ -41,8 +42,7 @@ START_TEST(test_second_ptr_null)
     ck_assert_ptr_null(head_a->next);
     ck_assert_ptr_null(head_b);
 
-    free(film);
-    free(head_a);
+    free_list(head_a);
 }
 END_TEST
 
@@ -50,7 +50,7 @@ END_TEST
 START_TEST(test_first_ptr_null)
 {
     film_t *film = malloc(sizeof(film_t));
-    film->name = "Terminator";
+    film->name = strdup("Terminator");
     film->ticket_price = 1000;
 
     node_t *head_b = malloc(sizeof(node_t));
@@ -69,8 +69,7 @@ START_TEST(test_first_ptr_null)
     ck_assert_ptr_null(head_a->next);
     ck_assert_ptr_null(head_b);
 
-    free(film);
-    free(head_a);
+    free_list(head_a);
 }
 END_TEST
 
@@ -78,11 +77,11 @@ END_TEST
 START_TEST(test_two_films)
 {
     film_t *film_1 = malloc(sizeof(film_t));
-    film_1->name = "Terminator";
+    film_1->name = strdup("Terminator");
     film_1->ticket_price = 1000;
 
     film_t *film_2 = malloc(sizeof(film_t));
-    film_2->name = "Snatched";
+    film_2->name = strdup("Snatched");
     film_2->ticket_price = 1500;
 
     node_t *head_a = malloc(sizeof(node_t));
@@ -107,11 +106,7 @@ START_TEST(test_two_films)
     ck_assert_str_eq(res_film->name, film_2->name);
     ck_assert_int_eq(res_film->ticket_price, film_2->ticket_price);
 
-    (void) pop_front(&head_a);
-    (void) pop_front(&head_a);
-
-    free(film_1);
-    free(film_2);
+    free_list(head_a);
 }
 END_TEST
 

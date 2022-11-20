@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "check_front_back_split.h"
+#include <string.h>
+#include "check_append.h"
 #include "../inc/list_functions.h"
 #include "../inc/struct.h"
-//#include "../inc/constants.h"
+#include "../inc/struct_IO.h"
 
 // Список из одного элемента
 START_TEST(test_one_film)
 {
     film_t *film = malloc(sizeof(film_t));
-    film->name = "Terminator";
+    film->name = strdup("Terminator");
     film->ticket_price = 1000;
 
     node_t *head = malloc(sizeof(node_t));
@@ -28,8 +29,7 @@ START_TEST(test_one_film)
     ck_assert_ptr_null(head->next);
     ck_assert_ptr_null(back);
 
-    free(film);
-    free(head);
+    free_list(head);
 }
 END_TEST
 
@@ -37,11 +37,11 @@ END_TEST
 START_TEST(test_two_films)
 {
     film_t *film_1 = malloc(sizeof(film_t));
-    film_1->name = "Terminator";
+    film_1->name = strdup("Terminator");
     film_1->ticket_price = 1000;
 
     film_t *film_2 = malloc(sizeof(film_t));
-    film_2->name = "Snatched";
+    film_2->name = strdup("Snatched");
     film_2->ticket_price = 1500;
 
     node_t *tail = malloc(sizeof(node_t));
@@ -68,11 +68,8 @@ START_TEST(test_two_films)
     ck_assert_int_eq(res_film->ticket_price, film_2->ticket_price);
     ck_assert_ptr_null(back->next);
 
-    (void) pop_front(&head);
-    (void) pop_front(&back);
-
-    free(film_1);
-    free(film_2);
+    free_list(head);
+    free_list(back);
 }
 END_TEST
 
@@ -80,15 +77,15 @@ END_TEST
 START_TEST(test_three_films)
 {
     film_t *film_1 = malloc(sizeof(film_t));
-    film_1->name = "Terminator";
+    film_1->name = strdup("Terminator");
     film_1->ticket_price = 1000;
 
     film_t *film_2 = malloc(sizeof(film_t));
-    film_2->name = "Snatched";
+    film_2->name = strdup("Snatched");
     film_2->ticket_price = 1500;
 
     film_t *film_3 = malloc(sizeof(film_t));
-    film_3->name = "Angry birds";
+    film_3->name = strdup("Angry birds");
     film_3->ticket_price = 600;
 
     node_t *tail = malloc(sizeof(node_t));
@@ -125,13 +122,8 @@ START_TEST(test_three_films)
     ck_assert_int_eq(res_film->ticket_price, film_3->ticket_price);
     ck_assert_ptr_null(back->next);
 
-    (void) pop_front(&head);
-    (void) pop_front(&head);
-    (void) pop_front(&back);
-
-    free(film_1);
-    free(film_2);
-    free(film_3);
+    free_list(head);
+    free_list(back);
 }
 END_TEST
 

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "check_pop_front.h"
+#include <string.h>
+#include "check_append.h"
 #include "../inc/list_functions.h"
 #include "../inc/struct.h"
-//#include "../inc/constants.h"
+#include "../inc/struct_IO.h"
 
 // Негатив: в функцию передается NULL
 START_TEST(test_null)
@@ -29,7 +30,7 @@ END_TEST
 START_TEST(test_one_film)
 {
     film_t *film = malloc(sizeof(film_t));
-    film->name = "Terminator";
+    film->name = strdup("Terminator");
     film->ticket_price = 1000;
 
     node_t *head = malloc(sizeof(node_t));
@@ -42,7 +43,7 @@ START_TEST(test_one_film)
     ck_assert_int_eq(film->ticket_price, res_data->ticket_price);
     ck_assert_ptr_null(head);
 
-    free(film);
+    free_film(film);
 }
 END_TEST
 
@@ -50,11 +51,11 @@ END_TEST
 START_TEST(test_two_films)
 {
     film_t *film_1 = malloc(sizeof(film_t));
-    film_1->name = "Terminator";
+    film_1->name = strdup("Terminator");
     film_1->ticket_price = 1000;
 
     film_t *film_2 = malloc(sizeof(film_t));
-    film_2->name = "Snatched";
+    film_2->name = strdup("Snatched");
     film_2->ticket_price = 1500;
 
     node_t *tail = malloc(sizeof(node_t));
@@ -71,9 +72,8 @@ START_TEST(test_two_films)
     ck_assert_int_eq(film_1->ticket_price, res_data->ticket_price);
     ck_assert_ptr_eq(head, tail);
 
-    free(film_1);
-    free(film_2);
-    free(head);
+    free_film(res_data);
+    free_list(head);
 }
 END_TEST
 
