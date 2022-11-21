@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../inc/constants.h"
 #include "../inc/polynomial_process.h"
 
@@ -35,6 +36,8 @@ int main(void)
     }
     else
         rc = ERR_INVALID_ARGS;
+
+    free(mode);
     
     return rc;
 }

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../inc/struct.h"
 #include "../inc/struct_IO.h"
 #include "../inc/polynomial_func.h"
@@ -18,9 +19,9 @@ int ddx_process(void)
         derivative(polynomial);
 
         print_all(stdout, polynomial);
-
-        free_list(polynomial);
     }
+
+    free_list(polynomial);
 
     return rc;
 }
@@ -110,7 +111,7 @@ int dvd_process(void)
         free_list(odds);
     }
 
-    // free_list(src_polynomial);
+    free_list(src_polynomial);
 
     return rc;
 }

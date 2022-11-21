@@ -18,7 +18,7 @@ for i in $args; do
 done;
 
 if [ "$USE_VALGRIND" ]; then
-  command="valgrind -q --log-file=../../out/valgrind_message.txt ../../app.exe $s < $1 > ../../out/outfile.txt"
+  command="valgrind -q --leak-check=full --log-file=../../out/valgrind_message.txt ../../app.exe $s < $1 > ../../out/outfile.txt"
 else
   command="../../app.exe $s < $1 > ../../out/outfile.txt"
 fi

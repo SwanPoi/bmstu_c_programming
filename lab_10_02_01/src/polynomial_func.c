@@ -3,6 +3,7 @@
 #include "../inc/struct.h"
 #include "../inc/constants.h"
 #include "../inc/polynomial_func.h"
+#include "../inc/list_functions.h"
 
 int count_polynomial(node_t *polynomial, int x)
 {
@@ -102,7 +103,6 @@ node_t *sum_polynomials(node_t *first, node_t *second, int *rc)
                             result = cur_node;
                             cur_part = result;
                         }
-
                         else
                         {
                             cur_part->next = cur_node;
@@ -116,8 +116,10 @@ node_t *sum_polynomials(node_t *first, node_t *second, int *rc)
                     }
                 }
                 else
+                {
                     *rc = ERR_ALLOC;
-
+                    free(cur_node);
+                }
             }
             else
                 *rc = ERR_ALLOC;
@@ -125,69 +127,11 @@ node_t *sum_polynomials(node_t *first, node_t *second, int *rc)
 
         if (second != NULL && *rc == ERR_OK)
         {
-            while (second != NULL && *rc == ERR_OK)
-            {
-                node_t *cur_node = malloc(sizeof(node_t));
-
-                if (cur_node)
-                {
-                    summand_t *cur_data = malloc(sizeof(summand_t));
-
-                    if (cur_data)
-                    {
-                        second_data = second->data;
-                        cur_data->degree = second_data->degree;
-                        cur_data->multiplier = second_data->multiplier;
-
-                        second = second->next;
-
-                        cur_node->data = cur_data;
-                        cur_node->next = NULL;
-
-                        if (result == NULL)
-                            result = cur_node;
-                        else
-                            result->next = cur_node;
-                    }
-                    else
-                        *rc = ERR_ALLOC;
-                }
-                else
-                    *rc = ERR_ALLOC;
-            }
+            *rc = append(&cur_part, second);
         }
         else if (first != NULL && *rc == ERR_OK)
         {
-            while (first != NULL && *rc == ERR_OK)
-            {
-                node_t *cur_node = malloc(sizeof(node_t));
-
-                if (cur_node)
-                {
-                    summand_t *cur_data = malloc(sizeof(summand_t));
-
-                    if (cur_data)
-                    {
-                        second_data = first->data;
-                        cur_data->degree = first_data->degree;
-                        cur_data->multiplier = first_data->multiplier;
-
-                        first = first->next;
-
-                        cur_node->data = cur_data;
-                        cur_node->next = NULL;
-
-                        if (result == NULL)
-                            result = cur_node;
-                        else
-                            result->next = cur_node;
-                    }
-                    else
-                        *rc = ERR_ALLOC;
-                }
-                else
-                    *rc = ERR_ALLOC;
-            }
+            *rc = append(&cur_part, first);
         }
     }
     else
@@ -218,7 +162,9 @@ int split_odds_and_evens(node_t *src, node_t **evens, node_t **odds)
 
                 if (cur_data)
                 {
-                    cur_data = data;
+                    cur_data->degree = data->degree;
+                    cur_data->multiplier = data->multiplier;
+
                     cur_node->data = cur_data;
                     cur_node->next = NULL;
 
@@ -248,14 +194,17 @@ int split_odds_and_evens(node_t *src, node_t **evens, node_t **odds)
                             cur_odd = cur_odd->next;
                         }
                     }
+
+                    src = src->next;
                 }
                 else
+                {
                     rc = ERR_ALLOC;
+                    free(cur_node);
+                }
             }
             else
                 rc = ERR_ALLOC;
-
-            src = src->next;
         }
     }
     else

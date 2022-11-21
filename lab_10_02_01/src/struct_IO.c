@@ -112,9 +112,17 @@ int init_struct_list(FILE *file, node_t **polynomial)
                             cur_part = cur_part->next;
                         }    
                     }
+                    else
+                    {
+                        free(node->data);
+                        free(node);
+                    }
                 }
                 else
+                {
                     code = ERR_ALLOC;
+                    free(node);
+                }
             }
             else
                 code = ERR_ALLOC;

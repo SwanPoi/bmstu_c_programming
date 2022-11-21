@@ -8,8 +8,8 @@ CHECK_FLAGS := $(shell pkg-config --cflags --libs check)
 SRCS := ./src/list_functions.c ./src/struct_IO.c ./src/polynomial_func.c ./src/polynomial_process.c
 OBJS := ./out/list_functions.o ./out/struct_IO.o ./out/polynomial_func.o ./out/polynomial_process.o
 
-CHECK_SRCS := ./unit_tests/check_main.c ./unit_tests/check_pop_front.c ./unit_tests/check_pop_back.c ./unit_tests/check_append.c ./unit_tests/check_front_back_split.c ./unit_tests/check_sort.c  ./unit_tests/check_sorted_merge.c
-CHECK_OBJS := ./out/check_main.o ./out/check_pop_front.o ./out/check_pop_back.o ./out/check_append.o ./out/check_front_back_split.o ./out/check_sort.o ./out/check_sorted_merge.o
+CHECK_SRCS := ./unit_tests/check_main.c ./unit_tests/check_pop_front.c ./unit_tests/check_append.c
+CHECK_OBJS := ./out/check_main.o ./out/check_pop_front.o ./out/check_append.o
 
 ifeq ($(mode), debug)
 	CFLAGS += -g3
