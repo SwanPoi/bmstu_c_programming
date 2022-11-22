@@ -19,9 +19,9 @@ int ddx_process(void)
         derivative(polynomial);
 
         print_all(stdout, polynomial);
-    }
 
-    free_list(polynomial);
+        free_list(polynomial);
+    }
 
     return rc;
 }
@@ -76,12 +76,12 @@ int sum_process(void)
                 print_all(stdout, result);
                 free_list(result);
             }
+
+            free_list(second_polynomial);
         }
 
-        free_list(second_polynomial);
+        free_list(first_polynomial);
     }
-
-    free_list(first_polynomial);
 
     return rc;
 }
@@ -105,13 +105,13 @@ int dvd_process(void)
         {
             print_all(stdout, evens);
             print_all(stdout, odds);
+
+            free_list(evens);
+            free_list(odds);
         }
 
-        free_list(evens);
-        free_list(odds);
+        free_list(src_polynomial);
     }
-
-    free_list(src_polynomial);
 
     return rc;
 }

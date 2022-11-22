@@ -26,22 +26,23 @@ void *pop_back(node_t **head)
 	{
 		node_t *node = *head;
 
-		while (node->next != NULL)
-			node = node->next;
+		if ((*head)->next != NULL)
+		{
+			while (node->next->next != NULL)
+				node = node->next;
 
-		back_data = node->data;
+			back_data = node->next->data;
 
-		node_t *before_node = *head;
+			free(node->next);
 
-		while (before_node->next != NULL && before_node->next != node)
-			before_node = before_node->next;
-
-		before_node->next = NULL;
-
-		free(node);
-
-		if (node == *head)
+			node->next = NULL;
+		}
+		else
+		{
+			back_data = node->data;
+			free(node);
 			*head = NULL;
+		}
 	}
 
 	return back_data;

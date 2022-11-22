@@ -86,6 +86,7 @@ int init_struct_list(FILE *file, node_t **polynomial)
     if (!file)
         code = ERR_NULL;
     else
+    {
         while (!feof(file) && code == ERR_OK && symb != '\n')
         {
             node_t *node = malloc(sizeof(node_t));
@@ -99,23 +100,15 @@ int init_struct_list(FILE *file, node_t **polynomial)
                 {
                     code = read_structure(file, node->data);
 
-                    if (code == ERR_OK)
+                    if (*polynomial == NULL)
                     {
-                        if (*polynomial == NULL)
-                        {
-                            *polynomial = node;
-                            cur_part = *polynomial;
-                        }
-                        else
-                        {
-                            cur_part->next = node;
-                            cur_part = cur_part->next;
-                        }    
+                        *polynomial = node;
+                        cur_part = *polynomial;
                     }
                     else
                     {
-                        free(node->data);
-                        free(node);
+                        cur_part->next = node;
+                        cur_part = cur_part->next;
                     }
                 }
                 else
@@ -129,6 +122,13 @@ int init_struct_list(FILE *file, node_t **polynomial)
 
             fscanf(file, "%c", &symb);
         }
+
+        if (code != ERR_OK)
+        {
+            free_list(*polynomial);
+            *polynomial = NULL;
+        }
+    }
 
     return code;
 }

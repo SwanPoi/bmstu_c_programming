@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "../inc/struct.h"
 #include "../inc/constants.h"
 #include "../inc/polynomial_func.h"
 #include "../inc/list_functions.h"
+#include "../inc/struct_IO.h"
 
 int count_polynomial(node_t *polynomial, int x)
 {
@@ -15,12 +17,8 @@ int count_polynomial(node_t *polynomial, int x)
         while (polynomial != NULL)
         {
             sum = polynomial->data;
-            int cur_res = sum->multiplier;
 
-            for (int i = 0; i < sum->degree; i++)
-                cur_res *= x;
-
-            result += cur_res;
+            result += sum->multiplier * (int) pow(x, sum->degree);
 
             polynomial = polynomial->next;
         }
@@ -133,6 +131,9 @@ node_t *sum_polynomials(node_t *first, node_t *second, int *rc)
         {
             *rc = append(&cur_part, first);
         }
+
+        if (*rc != ERR_OK)
+            free_list(result);
     }
     else
         *rc = ERR_NULL;
@@ -205,6 +206,12 @@ int split_odds_and_evens(node_t *src, node_t **evens, node_t **odds)
             }
             else
                 rc = ERR_ALLOC;
+        }
+
+        if (rc != ERR_OK)
+        {
+            free_list(*evens);
+            free_list(*odds);
         }
     }
     else

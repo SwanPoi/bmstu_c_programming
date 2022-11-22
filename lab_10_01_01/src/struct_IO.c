@@ -94,6 +94,7 @@ int init_struct_list(FILE *file, node_t **films)
     if (!file)
         code = ERR_NULL;
     else
+    {
         while (!feof(file) && code == ERR_OK)
         {
             node_t *node = malloc(sizeof(node_t));
@@ -107,26 +108,33 @@ int init_struct_list(FILE *file, node_t **films)
                 {
                     code = read_structure(file, node->data);
 
-                    if (code == ERR_OK)
+                    if (*films == NULL)
                     {
-                        if (*films == NULL)
-                        {
-                            *films = node;
-                            cur_film = *films;
-                        }
-                        else
-                        {
-                            cur_film->next = node;
-                            cur_film = cur_film->next;
-                        }    
+                        *films = node;
+                        cur_film = *films;
+                    }
+                    else
+                    {
+                        cur_film->next = node;
+                        cur_film = cur_film->next;
                     }
                 }
                 else
+                {
                     code = ERR_ALLOC;
+                    free(node);
+                }
             }
             else
                 code = ERR_ALLOC;
         }
+
+        if (code != ERR_OK)
+        {
+            free_list(*films);
+            *films = NULL;
+        }
+    }
 
     return code;
 }
