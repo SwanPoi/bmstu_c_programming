@@ -97,12 +97,13 @@ END_TEST
 // Положительное целое число
 START_TEST(test_hex_positive_digit)
 {
-    char str[5] = "";
-    char my_str[5] = "";
-    size_t size = 5;
+    char str[20];
+    char my_str[20];
+    size_t size = 20;
+    unsigned int digit = 4294967294;
 
-    int write = snprintf(str, size, "%x", 24);
-    int my_write = my_snprintf(my_str, size, "%x", 24);
+    int write = snprintf(str, size, "%x", digit);
+    int my_write = my_snprintf(my_str, size, "%x", digit);
 
     ck_assert_int_eq(write, my_write);
     ck_assert_str_eq(str, my_str);

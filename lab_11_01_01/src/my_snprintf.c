@@ -34,7 +34,7 @@ int my_snprintf(char *s, size_t n, const char *format, ...)
                 else if (format[i + 1] == 'd')
                 {
                     i++;
-                    int digit = (int)va_arg(args, int);
+                    int digit = va_arg(args, int);
 
                     digit_specifier(s, digit, n, &return_len);
                 }

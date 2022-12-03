@@ -13,7 +13,7 @@ void string_specifier(char *dst, char *src, size_t max_length, int *cur_length)
 
 void write_symbol(char *dst, char symbol, size_t max_length, int *cur_length)
 {
-    if (*cur_length < (int)max_length - 1)
+    if (*cur_length < ((int)max_length) - 1)
     {
         if (dst)
             dst[*cur_length] = symbol;
@@ -60,7 +60,7 @@ void digit_specifier(char *dst, int digit, size_t max_length, int *cur_length)
     }
 }
 
-int digit_to_hex_string(char *char_digit, int max_len, int digit)
+int digit_to_hex_string(char *char_digit, int max_len, unsigned int digit)
 {
     int start_position = max_len;
 
