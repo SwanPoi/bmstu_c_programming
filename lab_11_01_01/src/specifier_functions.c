@@ -48,7 +48,7 @@ void digit_specifier(char *dst, int digit, size_t max_length, int *cur_length)
     else if (digit < 0)
     {
         write_symbol(dst, '-', max_length, cur_length);
-        new_digit = -1 *(long int) digit;
+        new_digit = -1 *(long int)digit;
     }
 
     if (new_digit > 0)
