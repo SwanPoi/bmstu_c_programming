@@ -6,12 +6,13 @@
 // Положительное целое число
 START_TEST(test_positive_digit)
 {
-    char str[5] = "";
-    char my_str[5] = "";
-    size_t size = 5;
+    char str[20];
+    char my_str[20];
+    size_t size = 20;
+    long int digit = 2147483648;
 
-    int write = snprintf(str, size, "%d", 24);
-    int my_write = my_snprintf(my_str, size, "%d", 24);
+    int write = snprintf(str, size, "%d", (int) digit);
+    int my_write = my_snprintf(my_str, size, "%d", (int) digit);
 
     ck_assert_int_eq(write, my_write);
     ck_assert_str_eq(str, my_str);

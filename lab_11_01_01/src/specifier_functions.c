@@ -22,7 +22,7 @@ void write_symbol(char *dst, char symbol, size_t max_length, int *cur_length)
     (*cur_length)++;
 }
 
-int digit_to_string(char *char_digit, int max_len, int digit)
+int digit_to_string(char *char_digit, int max_len, long int digit)
 {
     int start_position = max_len;
 
@@ -41,20 +41,22 @@ int digit_to_string(char *char_digit, int max_len, int digit)
 
 void digit_specifier(char *dst, int digit, size_t max_length, int *cur_length)
 {
+    long int new_digit = digit;
+
     if (digit == 0)
         write_symbol(dst, '0', max_length, cur_length);
     else if (digit < 0)
     {
         write_symbol(dst, '-', max_length, cur_length);
-        digit *= -1;
+        new_digit = -1 *(long int) digit;
     }
 
-    if (digit > 0)
+    if (new_digit > 0)
     {
         char string_number[INT_LEN + 1];
         string_number[INT_LEN] = '\0';
 
-        int start_position = digit_to_string(string_number, INT_LEN, digit);
+        int start_position = digit_to_string(string_number, INT_LEN, new_digit);
 
         string_specifier(dst, string_number + start_position, max_length, cur_length);
     }
