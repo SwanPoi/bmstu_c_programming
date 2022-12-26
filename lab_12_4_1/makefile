@@ -19,6 +19,8 @@ CHECK_OBJS := ./out/check_main.o ./out/check_sort.o ./out/check_filter.o
 
 TARGET := ./app.exe
 
+path := $(shell pwd)
+
 ifeq ($(mode), debug)
 	CFLAGS += -g3
 endif
@@ -76,10 +78,12 @@ $(TARGET) : $(OBJS_LIB)
 clean:
 	rm rm -f ./*.exe ./out/*.o ./out/*.gcda ./out/*.gcno ./out/*.gcov ./out/*.txt ./out/*.d ./*.gcov ./*.a ./*.so
 
-func:
+func: ./app.exe 
+	$(shell export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../..)
 	./collect_coverage.sh
 
 unit: unit_tests.exe
+	$(shell export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../..)
 	./unit_tests.exe
 
 
